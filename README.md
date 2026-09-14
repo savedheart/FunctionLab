@@ -1,2 +1,2 @@
-# FunctionLab
-Two IASA students' pet project
+FunctionLab
+Кучеренко Максим КН-41, Комарницький Роман КН-42
