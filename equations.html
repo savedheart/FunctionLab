@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="equations.css">
+    <title>FunctionLab</title>
+</head>
+
+<body>
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <img src="src/assets/logo.svg" alt="logo">
+            <span>FunctionLab</span>
+        </div>
+
+        <nav class="menu">
+            <ul>
+                <li>
+                    <a href="" target="_self">Graphs and function analysis</a>
+                </li>
+
+                <li>
+                    <span class = "active">Equations</span>
+                </li>
+
+                <li>
+                    <a href="numerical-methods.html" target="_self">Numerical methods</a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <main class="content">
+
+        <header class="main-header">
+            <h1>Equations solving</h1>
+            <p>Analytical and numerical methods.</p>
+        </header>
+
+        <nav class="equation-types">
+            <button type="button">
+                Algebraic
+            </button>
+
+            <button type="button">
+                Transcendental
+            </button>
+
+            <button type="button">
+                Systems of equations
+            </button>
+        </nav>
+
+        <section class="equation-input">
+
+            <form>
+                <label for="equation">
+                    Enter your equation:
+                </label>
+
+                <div class="input-row">
+                    <input type="text" id="equation" name="equation">
+
+                    <button type="submit">
+                        Solve
+                    </button>
+                </div>
+            </form>
+
+        </section>
+
+        <section class="results">
+            <h2>Result:</h2>
+        </section>
+    </main>
+
+</body>
+</html>
