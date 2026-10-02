@@ -17,7 +17,7 @@ function Homepage(){
                         image=''
                         title='Graphs and function analysis'
                         paragraph='Build function graphs, explore their properties'
-                        link=''
+                        link='/graphs'
                     />
                     <Card
                         image=''
