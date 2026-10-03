@@ -2,9 +2,11 @@
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
-import Homepage from './homepage.tsx'
-import Graphspage from './graphspage.tsx'
-import Page404 from './page404.tsx'
+import Homepage from './pages/homepage.tsx'
+import Graphspage from './pages/graphspage.tsx'
+import Page404 from './pages/page404.tsx'
+
+import './styles/global.css';
 
 const router = createBrowserRouter([
     {

@@ -1,0 +1,11 @@
+@import './reset.css';
+
+
+body {
+    background: #0e0d17;
+    min-height: 100vh;
+
+    display: flex;
+
+    color: white;
+}

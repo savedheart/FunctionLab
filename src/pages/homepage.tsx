@@ -1,5 +1,5 @@
-import Header from './header.tsx'
-import Card from './card.tsx'
+import Header from '../components/header.tsx'
+import Card from '../components/card.tsx'
 
 function Homepage(){
     return(

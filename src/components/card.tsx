@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import styles from './card.module.css';
 
 interface CardProps{
     link: string;
@@ -9,7 +10,7 @@ interface CardProps{
 
 function Card({link, image, title, paragraph}: CardProps){
     return(
-        <Link to={link} target = "_self">
+        <Link to={link} target = "_self" className={styles.cardContainer}>
             <img src={image} alt="{title}"/>
             <h2>{title}</h2>
             <p>{paragraph}</p>
