@@ -1,12 +1,14 @@
-import logo from './assets/logo.svg'
+import logo from '../assets/logo.svg'
+
+import { Link } from "react-router-dom";
 
 function Header(){
     return(
         <header>
-            <a href="homepage.html" target="_self">
+            <Link to="/">
                 <img src={logo}/>
                 <span>FunctionLab</span>
-            </a>
+            </Link>
 
             <a href="about.html" target="_self">
                 <span>About</span>

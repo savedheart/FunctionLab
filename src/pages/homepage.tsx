@@ -1,5 +1,5 @@
-import Header from './header.tsx'
-import Card from './card.tsx'
+import Header from '../components/header.tsx'
+import Card from '../components/card.tsx'
 
 function Homepage(){
     return(
@@ -17,7 +17,7 @@ function Homepage(){
                         image=''
                         title='Graphs and function analysis'
                         paragraph='Build function graphs, explore their properties'
-                        link=''
+                        link='/graphs'
                     />
                     <Card
                         image=''
