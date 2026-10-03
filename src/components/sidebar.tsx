@@ -5,9 +5,11 @@ import equations from './assets/equations.svg'*/
 
 import { Link } from "react-router-dom";
 
+import styles from './sidebar.module.css'
+
 function Sidebar(){
     return(
-        <aside>
+        <aside className={styles.sidebarContainer}>
             <nav>
                 <ul>
                     <li>

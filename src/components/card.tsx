@@ -10,7 +10,7 @@ interface CardProps{
 
 function Card({link, image, title, paragraph}: CardProps){
     return(
-        <Link to={link} target = "_self" className={styles.cardContainer}>
+        <Link to={link} target = "_self" className={styles.card}>
             <img src={image} alt="{title}"/>
             <h2>{title}</h2>
             <p>{paragraph}</p>

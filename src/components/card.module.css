@@ -1,3 +1,37 @@
-.cardContainer{
+.card{
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    border: 2px solid #25233b;
+    border-radius: 10px;
+
+    width: 200px;
+    padding: 20px;
+
+    background-color: #1d1b2e;
+}
+
+.card h2{
+    font-size: 1em;
+    padding: 15px;
+}
+
+.card p{
+    padding: 15px;
+    text-align: center;
+}
+
+.card button{
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+    border-color: #3b375f;
+    background-color: #49419b;
+}
+
+.card button:hover{
+    cursor: pointer;
 }
