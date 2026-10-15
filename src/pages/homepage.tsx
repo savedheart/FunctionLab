@@ -1,5 +1,7 @@
-import Header from './header.tsx'
-import Card from './card.tsx'
+import Header from '../components/header.tsx'
+import Card from '../components/card.tsx'
+
+import styles from './homepage.module.css'
 
 function Homepage(){
     return(
@@ -8,16 +10,16 @@ function Homepage(){
             <main>
                 <section>
                     <h1>FunctionLab</h1>
-                    <p>Learn. Calculate. Analyze.</p><br/>
-                    <p>A convenient tool for working with functions and numerical methods</p>
+                    <p className={styles.headingSecondary}>Learn. Calculate. Analyze.</p>
+                    <p className={styles.headingDescription}>A convenient tool for working with functions and numerical methods</p>
                 </section>
 
-                <nav>
+                <nav className={styles.cardContainer}>
                     <Card
                         image=''
                         title='Graphs and function analysis'
                         paragraph='Build function graphs, explore their properties'
-                        link=''
+                        link='/graphs'
                     />
                     <Card
                         image=''

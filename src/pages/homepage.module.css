@@ -1,0 +1,25 @@
+
+
+.cardContainer{
+    display: flex;
+    gap: 10px;
+    width: 95%;
+    /*border: 2px solid red;*/
+
+    margin: 20px 0px;
+
+}
+
+h1{
+    text-align: center;
+    
+}
+
+.headingSecondary{
+    text-align: center;
+}
+
+.headingDescription{
+    text-align: center;
+    margin: 0;
+}
