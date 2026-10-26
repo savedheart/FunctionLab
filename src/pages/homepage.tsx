@@ -7,7 +7,7 @@ import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import Footer from '../components/Footer/Footer';
 
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 function Homepage(){
     return(

@@ -7,13 +7,13 @@ interface CardProps{
 
 function Card({image, title, paragraph}: CardProps){
     return(
-        <>
-            <img src={image} alt="" />
+        <article>
+            <img src={image} alt={title}/>
             <div>
                 <h2>{title}</h2>
                 <p>{paragraph}</p>
             </div>
-        </>
+        </article>
     )
 }
 
