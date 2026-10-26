@@ -1,6 +1,6 @@
 import logo from '../../assets/logo.png';
 
-export function Header() {
+export default function Header() {
     return (
         <header className="header">
             <a href="" className="header__brand">
