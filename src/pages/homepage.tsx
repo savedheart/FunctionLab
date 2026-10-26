@@ -7,6 +7,8 @@ import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import Footer from '../components/Footer/Footer';
 
+import style from './homepage.module.css'
+
 import { Link } from "react-router-dom";
 
 function Homepage(){
@@ -20,13 +22,13 @@ function Homepage(){
                 <h1>FunctionLab</h1>
                 <p>Plot and analyze functions visually.</p>
                 <p>A modern graphing calculator for exploring functions, multiple equations and mathematical analysis.</p>
-                <Link to="/">
+                <Link to="workpage" className={style.startBtn}>
                     <span>Start</span>
                     <img src={rightArrow}/>
                 </Link>
             </section>
 
-            <section>
+            <section className={style.cardSection}>
                 <Card
                     image = {graphIcon}
                     title='Plot Graphs'

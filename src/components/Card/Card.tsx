@@ -1,3 +1,5 @@
+import style from './Card.module.css'
+
 
 interface CardProps{
     image?: string;
@@ -7,7 +9,7 @@ interface CardProps{
 
 function Card({image, title, paragraph}: CardProps){
     return(
-        <article>
+        <article className={style.cardContainer}>
             <img src={image} alt={title}/>
             <div>
                 <h2>{title}</h2>

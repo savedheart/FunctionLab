@@ -1,0 +1,10 @@
+.cardContainer{
+    max-width: 440px;
+    border: 2px solid black;
+    display: flex;
+    gap: 10px;
+}
+
+.cardContainer img{
+    max-width: 80px;
+}
