@@ -10,5 +10,5 @@ export function Header() {
                 </span>
             </a>
         </header>
-    )
+    );
 }
