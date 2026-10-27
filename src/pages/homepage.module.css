@@ -1,0 +1,11 @@
+.cardSection{
+    display: flex;
+}
+
+.startBtn{
+    background-color: var(--color-accent);
+}
+
+.startBtn img{
+    max-width: 24px;
+}

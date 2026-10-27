@@ -1,4 +1,4 @@
-export function Footer() {
+export defult function Footer() {
     return (
         <footer className="footer">
             <p className="footer__text">

@@ -1,0 +1,7 @@
+.headerContainer{
+    border: 2px solid black;
+}
+
+.header__logo{
+    max-width: 64px;
+}

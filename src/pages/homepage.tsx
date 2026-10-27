@@ -1,0 +1,60 @@
+import rightArrow from '../assets/arrow-circle-right.svg'
+import graphIcon from '../assets/graph.svg'
+import picklistIcon from '../assets/multi-picklist.svg'
+import magnifierIcon from '../assets/magnifier-and-mark-help.svg'
+
+import Header from '../components/Header/Header';
+import Card from '../components/Card/Card';
+import Footer from '../components/Footer/Footer';
+
+import style from './homepage.module.css'
+
+import { Link } from "react-router-dom";
+
+function Homepage(){
+    return(
+        <>
+        <Header/>
+        <main>
+            <div>VISUALIZE   ·   EXPLORE   ·   ANALYZE</div>
+
+            <section>
+                <h1>FunctionLab</h1>
+                <p>Plot and analyze functions visually.</p>
+                <p>A modern graphing calculator for exploring functions, multiple equations and mathematical analysis.</p>
+                <Link to="workpage" className={style.startBtn}>
+                    <span>Start</span>
+                    <img src={rightArrow}/>
+                </Link>
+            </section>
+
+            <section className={style.cardSection}>
+                <Card
+                    image = {graphIcon}
+                    title='Plot Graphs'
+                    paragraph='Visualize functions with interactive
+                                graphs and a smooth, responsive
+                                graphing experience.'                          
+                />
+                <Card
+                    image = {picklistIcon}
+                    title='Multiple Functions'
+                    paragraph='Plot and compare multiple
+                                functions on the same graph
+                                with different colors.'                          
+                />
+                <Card
+                    image = {magnifierIcon}
+                    title='Analyze Functions'
+                    paragraph='Explore key features like roots,
+                                extrema, intervals, and more
+                                with built-in analysis tools.'                          
+                />
+            </section>
+        </main>
+        <Footer/>
+        </>
+    );
+}
+
+export default Homepage;
