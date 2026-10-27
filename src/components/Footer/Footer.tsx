@@ -1,8 +1,13 @@
-export defult function Footer() {
+
+
+import style from './Footer.module.css'
+
+export default function Footer() {
     return (
-        <footer className="footer">
-            <p className="footer__text">
-                FunctionLab<br />© 2026
+        <footer className={style.footerContainer}>
+            <p className={style.footerText}>
+                FunctionLab<br/>
+                © 2026
             </p>
         </footer>
     );
