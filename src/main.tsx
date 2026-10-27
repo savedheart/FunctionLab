@@ -8,7 +8,7 @@ import Page404 from './pages/Page404.tsx'
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/Homepage',
         element: <Homepage/>,
         errorElement: <Page404/>,
     }, 

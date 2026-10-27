@@ -1,0 +1,20 @@
+.footerContainer{
+    border-top: 2px solid;
+    border-color: var(--color-inputs-borders);
+    
+    background-color: var(--color-bar);
+
+    height: 80px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerText{
+    text-align: center;
+
+    color: var(--color-micro);
+    font-size: 18px;
+    font-weight: 400;
+}

@@ -16,3 +16,9 @@ body{
     color: #F1F4EE;
     font-family: 'Mukta Mahee', sans-serif;
 }
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

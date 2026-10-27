@@ -1,7 +1,41 @@
 .headerContainer{
-    border: 2px solid black;
+    border: 2px solid;
+    border-color: var(--color-inputs-borders);
+    border-radius: 20px;
+    
+    background-color: var(--color-bar);
+
+    width: 98%;
+    height: 80px;
+    
+    margin: 1% 1%;
+
+    font-size: 40px;
+    font-weight: 700;
+    
+    display: flex;
+    align-items: center;
+}
+
+.headerContainer a{
+    height: 64px;
+    display: flex;
+    gap: 10px;
+
+    margin-left: 30px;
+
+    text-decoration: none;
+    user-select: none;  
 }
 
 .header__logo{
     max-width: 64px;
+}
+
+.headerTitle{
+    color: var(--color-text);
+    
+}
+.headerHighlight{
+    color: var(--color-accent);
 }
