@@ -7,7 +7,7 @@ interface CardProps{
     paragraph: string;
 }
 
-function Card({image, title, paragraph}: CardProps){
+export default function Card({image, title, paragraph}: CardProps){
     return(
         <article className={style.cardContainer}>
             <img src={image} alt={title}/>
@@ -16,7 +16,5 @@ function Card({image, title, paragraph}: CardProps){
                 <p>{paragraph}</p>
             </div>
         </article>
-    )
+    );
 }
-
-export default Card;

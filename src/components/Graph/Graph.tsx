@@ -3,7 +3,7 @@ import minus from '../../assets/minus.svg'
 import fullscreen from '../../assets/expand-arrows.svg'
 import reset from '../../assets/reset.svg'
 
-export function Graph() {
+export default function Graph() {
     return (
         <section className="graph" aria-label="Function graph">
             <div className="graph__toolbar" aria-label="Graph controls">
