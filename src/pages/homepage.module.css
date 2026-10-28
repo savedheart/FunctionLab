@@ -1,11 +1,79 @@
+.main{
+    flex: 1;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    grid-template-areas: "mainText effects";
+}
+
+.asideAnimation{
+    border: 2px solid black;
+    grid-area: effects;
+    margin-right: 2vw;
+}
+
+.underHeader{
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-micro);
+    word-spacing: 0.7em;
+    margin: 30px 0px;
+}
+
+.nameSection{
+    width: 560px;
+    margin-left: 2vw;
+}
+
+.nameSection h1{
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1em;
+
+    grid-area: mainText;
+}
+.nameHighlight{
+    color: var(--color-accent);
+}
+.underName{
+    font-size: 36px;
+    color: var(--color-text);
+}
+.nameDescription{
+    font-size: 22px;
+    color: var(--color-micro);
+    margin: 10px 0px;
+}
+
 .cardSection{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);                            
+    padding: 50px 1vw;
 }
 
 .startBtn{
     background-color: var(--color-accent);
+
+    width: 300px;
+    height: 60px;
+    margin: 30px 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--color-bg);
 }
 
 .startBtn img{
-    max-width: 24px;
+    max-width: 32px;
 }

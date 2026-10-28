@@ -9,7 +9,7 @@ import Page404 from './pages/Page404'
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/Homepage',
         element: <Homepage />,
     },
     {
