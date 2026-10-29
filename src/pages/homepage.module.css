@@ -8,11 +8,7 @@
     grid-template-areas: "mainText effects";
 }
 
-.asideAnimation{
-    border: 2px solid black;
-    grid-area: effects;
-    margin-right: 2vw;
-}
+
 
 .underHeader{
     font-size: 20px;
@@ -23,7 +19,7 @@
 }
 
 .nameSection{
-    width: 560px;
+    max-width: 560px; width: 100%;
     margin-left: 2vw;
 }
 
@@ -76,4 +72,103 @@
 
 .startBtn img{
     max-width: 32px;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------------------????????7*/
+.asideAnimation{
+    grid-area: effects;
+    margin-right: 2vw;
+
+    overflow: hidden;
+    position: relative;
+}
+
+.asideAnimation {
+    grid-area: effects;
+    margin-right: 2vw;
+    background-color: hsl(225, 15%, 9%);
+    box-shadow: 8px -8px hsl(225, 15%, 10%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes scanPulse {
+  0% {
+    mask-position: 165% 0;
+    -webkit-mask-position: 165% 0;
+  }
+  100% {
+    mask-position: -60% 0;
+    -webkit-mask-position: -60% 0;
+  }
+}
+
+.graphLine {
+    position: absolute;
+    left: -1%;
+    width: 102%;
+    height: 100%;
+
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.3) 50%,
+    black 80%,
+    transparent 80.1%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.3) 50%,
+    black 80%,
+    transparent 80.1%,
+    transparent 100%
+  );
+                                
+    mask-size: 200% 100%;
+    -webkit-mask-size: 200% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+
+    animation: scanPulse 5s linear infinite both;
+}
+
+.graphLine path {
+    fill: none;
+    stroke-width: 3px;
+    stroke: currentColor;
+}
+
+.graphLine1 {
+    top: 0%;
+    animation-delay: 2s;
+    color: rgb(82, 79, 30);
+}
+
+.graphLine2 {
+    top: 0%;
+    animation-delay: 0s;
+    color: rgb(82, 30, 30);
+}
+
+.graphLine3 {
+    top: 0%;
+    animation-delay: 4s;
+    color: rgb(30, 70, 82);
+}
+
+.graphLine4 {
+    top: 0%;
+    animation-delay: 6s;
+    color: rgb(70, 30, 82);
+}
+
+.graphLine5 {
+    top: 0%;
+    animation-delay: 8s;
+    color: rgb(49, 82, 30);
 }

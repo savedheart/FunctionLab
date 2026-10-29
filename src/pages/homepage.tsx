@@ -28,7 +28,27 @@ function Homepage(){
                         <img src={rightArrow}/>
                     </Link>
                 </section>
-                <aside className={style.asideAnimation}></aside>  
+                <aside className={style.asideAnimation}> 
+                    <svg className={`${style.graphLine} ${style.graphLine1}`} viewBox="0 0 600 150" preserveAspectRatio="none">
+                      <path d="M 0 75 L 75 15 L 150 135 L 225 15 L 300 135 L 375 15 L 450 135 L 525 15 L 600 75" />
+                    </svg>
+
+                    <svg className={`${style.graphLine} ${style.graphLine2}`} viewBox="0 0 600 150" preserveAspectRatio="none">
+                      <path d="M 0 75 Q 150 160, 300 75 T 600 75" />
+                    </svg>
+
+                    <svg className={`${style.graphLine} ${style.graphLine3}`} viewBox="0 0 600 150" preserveAspectRatio="none">
+                      <path d="M 0 75 Q 75 10, 150 75 T 300 75 T 450 75 T 600 75" />
+                    </svg>
+
+                    <svg className={`${style.graphLine} ${style.graphLine4}`} viewBox="0 0 600 150" preserveAspectRatio="none">
+                      <path d="M 0 130 Q 300 120, 450 60 T 600 10" />
+                    </svg>
+                    
+                    <svg className={`${style.graphLine} ${style.graphLine5}`} viewBox="0 0 600 150" preserveAspectRatio="none">
+                      <path d="M 0 75 Q 100 -10, 200 75 T 380 75 T 520 75 T 600 75" />
+                    </svg>
+                </aside>  
             </div>
             <section className={style.cardSection}>
                 <Card
