@@ -7,6 +7,7 @@ import aimIcon from '../assets/aim.svg'
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import Footer from '../components/Footer/Footer';
+import HeroAnimation from '../components/HeroAnimation/HeroAnimation'
 
 import style from './homepage.module.css'
 
@@ -28,7 +29,7 @@ function Homepage(){
                         <img src={rightArrow}/>
                     </Link>
                 </section>
-                <aside className={style.asideAnimation}></aside>  
+                <HeroAnimation/>
             </div>
             <section className={style.cardSection}>
                 <Card
