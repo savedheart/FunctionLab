@@ -12,7 +12,6 @@ import HeroAnimation from '../components/HeroAnimation/HeroAnimation'
 import style from './homepage.module.css'
 
 import { Link } from "react-router-dom";
-import { Graph } from '../components/Graph/Graph'
 
 function Homepage(){
     return(
@@ -63,7 +62,6 @@ function Homepage(){
                 />
             </section>
         </main>
-        <Graph></Graph>
         <Footer/>
         </>
     );
