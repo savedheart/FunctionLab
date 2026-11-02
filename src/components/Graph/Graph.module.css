@@ -1,0 +1,47 @@
+.graph{
+    width: 98%;
+    height: 800px;
+    margin: 0px 1%;
+    padding: 20px 0px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: var(--color-bar);
+
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 20px;
+}
+
+.graph__toolbar{
+    display: flex;
+    align-self: flex-end;
+    gap: 12px;
+    height: fit-content;
+
+    padding: 0px 2% 20px 0px;
+}
+
+.graph__button{
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 12px;
+
+    width: 48px;
+    height: 40px;
+
+    background-color: var(--color-bar);
+}
+
+.graph__button img{
+    max-width: 20px;
+}
+
+.graph__viewport{
+    background-color: var(--color-bg);
+    height: 100%;
+    width: 98%;
+
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 20px;
+}
