@@ -5,7 +5,7 @@ import extrema from '../../assets/arrows-verticle.svg'
 import periodicity from '../../assets/graph.svg'
 import calculator from '../../assets/calculator_1.svg'
 
-export function FunctionAnalysis() {
+export default function FunctionAnalysis() {
     return (
         <section className="function-analysis">
             <h2 className="function-analysis__title">

@@ -1,0 +1,20 @@
+.functions-panel {
+    display: flex;
+
+    background-color: var(--color-bar);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 20px;
+
+    width: 336px;
+    height: 656px;
+}
+
+#functions-panel__title {
+    margin-top: 28px;
+    margin-left: 28px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    color: var(--color-text);
+}

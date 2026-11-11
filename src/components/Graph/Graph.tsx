@@ -2,10 +2,9 @@ import plus from '../../assets/plus.svg'
 import minus from '../../assets/minus.svg'
 import fullscreen from '../../assets/expand-arrows.svg'
 import reset from '../../assets/reset.svg'
-
 import style from './Graph.module.css'
 
-export function Graph() {
+export default function Graph() {
     return (
         <section className={style.graph} aria-label="Function graph">
             <div className={style.graph__toolbar} aria-label="Graph controls">

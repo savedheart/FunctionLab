@@ -1,13 +1,14 @@
-import eyeShow from '../../assets/eye-show.png'
+import eyeShow from '../../assets/eye-show.svg'
 //import eyeHide from '../../assets/eye-hide.svg'
 import dotsVertical from '../../assets/dots-vertical.svg'
 import keyboardShow from '../../assets/keyboard-show.svg'
 //import keyboardHide from '../../assets/keyboard-hide.svg'
+import style from './Functions.module.css'
 
-export function Functions() {
+export default function Functions() {
     return (
-        <section className="functions-panel" aria-labelledby="functions-title">
-            <h2 id="functions-title" className="functions-panel__title">
+        <section className={style['functions-panel']} aria-labelledby="functions-title">
+            <h2 id={style["functions-panel__title"]}>
                 Functions
             </h2>
 
