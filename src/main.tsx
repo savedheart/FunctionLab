@@ -1,6 +1,6 @@
 //import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom'
 
 import './styles/global.css'
 import Homepage from './pages/homepage'
@@ -9,7 +9,11 @@ import Page404 from './pages/Page404'
 
 const router = createBrowserRouter([
     {
-        path: '/Homepage',
+        path: '/',
+        element: <Navigate to='/homepage' replace />,
+    },
+    {
+        path: '/homepage',
         element: <Homepage />,
     },
     {
