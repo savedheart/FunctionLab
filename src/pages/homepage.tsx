@@ -26,7 +26,7 @@ function Homepage(){
                     <p className={style.nameDescription}>A modern graphing calculator for exploring functions, multiple equations and mathematical analysis.</p>
                     <Link to="workpage" className={style.startBtn}>
                         <span>Start</span>
-                        <img src={rightArrow}/>
+                        <img src={rightArrow} alt=""/>
                     </Link>
                 </section>
                 <HeroAnimation/>
