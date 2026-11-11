@@ -1,59 +1,99 @@
+import { useState } from 'react'
+import { useFunctions } from '../../hooks/useFunction'
+
+import type {MathFunction} from "../../types/MathFunction.ts"
+
 import eyeShow from '../../assets/eye-show.svg'
-//import eyeHide from '../../assets/eye-hide.svg'
+import eyeHide from '../../assets/eye-hide.svg'
 import dotsVertical from '../../assets/dots-vertical.svg'
 import keyboardShow from '../../assets/keyboard-show.svg'
-//import keyboardHide from '../../assets/keyboard-hide.svg'
+// import keyboardHide from '../../assets/keyboard-hide.svg'
+
 import style from './Functions.module.css'
 
 export default function Functions() {
+    const { functions, addFunction, toggleVisibility } = useFunctions()
+    const [input, setInput] = useState('')
+
+    function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        if (!input.trim()) return
+
+        addFunction(input)
+        setInput('')
+    }
+
     return (
         <section className={style['functions-panel']} aria-labelledby="functions-title">
-            <h2 id={style["functions-panel__title"]}>
+            <h2 id="functions-title" className={style['functions-panel__title']}>
                 Functions
             </h2>
 
-            <form className="functions-panel__form">
-                <input className="functions-panel__input" type="text" aria-label="Function expression" placeholder="Enter a function..." />
+            <form className={style['functions-panel__form']} onSubmit={handleAddFunction}>
+                <input
+                    className={style['functions-panel__input']}
+                    type="text"
+                    aria-label="Function expression"
+                    placeholder="Enter a function..."
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                />
 
-                <button className="functions-panel__add-button" type="submit">
+                <button className={style['functions-panel__add-button']} type="submit">
                     Add +
                 </button>
             </form>
 
-            <div className="functions-list">
-                <ul className="functions-list__items">
-                    <li className="functions-list__item">
-                        <span className="functions-list__color"></span>
+            <div className={style['functions-list']}>
+                <ul className={style['functions-list__items']}>
+                    {functions.map((func: MathFunction) => (
+                        <li className={style['functions-list__item']} key={func.id}>
+                            <span className={`${style['functions-list__color']} ${style[`functions-list__color--${func.color}`]}`} />
 
-                        <button className="functions-list__visibility-button" type="button" aria-label="Hide function">
-                            <img src={eyeShow} alt="" />
-                        </button>
+                            <label className={style['functions-list__visibility-button']}>
+                                <input
+                                    type="checkbox"
+                                    checked={func.visible}
+                                    onChange={(event) => toggleVisibility(func.id, event.target.checked)}
+                                    aria-label={`Show function ${func.expression || func.id}`}
+                                />
 
-                        <span className="functions-list__expression"></span>
+                                <img src={func.visible ? eyeShow : eyeHide} alt="" />
+                            </label>
 
-                        <button className="functions-list__options-button" type="button" aria-label="Function options">
-                            <img src={dotsVertical} alt="" />
-                        </button>
-                    </li>
+                            <span className={style['functions-list__expression']}>
+                                {func.expression}
+                            </span>
+
+                            <button
+                                className={style['functions-list__options-button']}
+                                type="button"
+                                aria-label={`Options for function ${func.id}`}
+                            >
+                                <img src={dotsVertical} alt="" />
+                            </button>
+                        </li>
+                    ))}
                 </ul>
             </div>
 
-            <section className="Graph Settings" aria-labelledby="graph-settings-title">
+            <section className={style['graph-settings']} aria-labelledby="graph-settings-title">
                 <h3 id="graph-settings-title">Graph Settings</h3>
 
-                <label className="graph-settings__grid-toggle">
+                <label className={style['graph-settings__grid-toggle']}>
                     <input type="checkbox" defaultChecked />
                     <span>Show grid</span>
                 </label>
 
-                <div className="graph-settings__range">
+                <div className={style['graph-settings__range']}>
                     <span>X range</span>
                     <input type="text" aria-label="Minimum X" />
                     <span>to</span>
                     <input type="text" aria-label="Maximum X" />
                 </div>
 
-                <div className="graph-settings__range">
+                <div className={style['graph-settings__range']}>
                     <span>Y range</span>
                     <input type="text" aria-label="Minimum Y" />
                     <span>to</span>
@@ -61,13 +101,20 @@ export default function Functions() {
                 </div>
             </section>
 
-            <section className="math-keypad" aria-labelledby="keypad-title">
-                <h3 id="keypad-title" className="math-keypad__title">Math keypad</h3>
+            <section className={style['math-keypad']} aria-labelledby="keypad-title">
+                <h3 id="keypad-title" className={style['math-keypad__title']}>
+                    Math keypad
+                </h3>
 
-                <button className="math-keypad__toggle" type="button" aria-label="Show math keypad" aria-expanded={false}>
+                <button
+                    className={style['math-keypad__toggle']}
+                    type="button"
+                    aria-label="Show math keypad"
+                    aria-expanded={false}
+                >
                     <img src={keyboardShow} alt="" />
                 </button>
             </section>
         </section>
-    );
+    )
 }
