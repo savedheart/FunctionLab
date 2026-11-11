@@ -1,20 +1,339 @@
 .functions-panel {
     display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    width: 336px;
+    height: 656px;
+    padding: 28px;
 
     background-color: var(--color-bar);
     border: 2px solid var(--color-inputs-borders);
     border-radius: 20px;
-
-    width: 336px;
-    height: 656px;
 }
 
-#functions-panel__title {
-    margin-top: 28px;
-    margin-left: 28px;
+/* Functions title */
+
+.functions-panel__title {
+    margin: 0 0 14px;
 
     font-size: 24px;
     font-weight: 700;
+    color: var(--color-text);
+}
+
+/* Function input */
+
+.functions-panel__form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.functions-panel__input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    box-sizing: border-box;
+    padding: 0 14px;
+
+    background-color: var(--color-bar);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 10px;
 
     color: var(--color-text);
+    font: inherit;
+    outline: none;
+}
+
+.functions-panel__input::placeholder {
+    color: var(--color-micro);
+}
+
+.functions-panel__input:focus {
+    border-color: var(--color-accent);
+}
+
+.functions-panel__add-button {
+    flex-shrink: 0;
+    height: 44px;
+    padding: 0 12px;
+
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: 10px;
+
+    color: var(--color-bg);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Functions list */
+
+.functions-list {
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 6px;
+
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-inputs-borders) transparent;
+}
+
+.functions-list__items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.functions-list__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+
+    min-height: 40px;
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 10px;
+}
+
+/* Functions colors */
+
+.functions-list__color {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.functions-list__color--green {
+    background-color: #b4ff39;
+}
+
+.functions-list__color--cyan {
+    background-color: #35d5e5;
+}
+
+.functions-list__color--purple {
+    background-color: #e535ed;
+}
+
+.functions-list__color--red {
+    background-color: #ff3545;
+}
+
+/* Visibility checkbox */
+
+.functions-list__visibility-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.functions-list__visibility-button input {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.functions-list__visibility-button img {
+    display: block;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+/* Function expression */
+
+.functions-list__expression {
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    min-width: 0;
+    height: 28px;
+    padding: 0 6px;
+    box-sizing: border-box;
+
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 5px;
+
+    color: var(--color-text);
+    font-size: 14px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Function options */
+
+.functions-list__options-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.functions-list__options-button img {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+/* Graph settings */
+
+.graph-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-top: 12px;
+    padding-top: 16px;
+
+    border-top: 2px solid var(--color-inputs-borders);
+}
+
+.graph-settings h3 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+/* Grid toggle */
+
+.graph-settings__grid-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 14px;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.graph-settings__grid-toggle input {
+    margin: 0;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+/* X and Y ranges */
+
+.graph-settings__range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: var(--color-text);
+}
+
+.graph-settings__range span:first-child {
+    min-width: 60px;
+}
+
+.graph-settings__range input {
+    flex: 1;
+    min-width: 0;
+    width: 0;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 6px;
+
+    background-color: var(--color-bar);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 10px;
+
+    color: var(--color-text);
+    font: inherit;
+    text-align: center;
+    outline: none;
+}
+
+.graph-settings__range input:focus {
+    border-color: var(--color-accent);
+}
+
+/* Math keypad */
+
+.math-keypad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 16px;
+    padding-top: 16px;
+
+    border-top: 1px solid var(--color-inputs-borders);
+}
+
+.math-keypad__title {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: center;
+}
+
+.math-keypad__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.math-keypad__toggle img {
+    display: block;
+    width: 60px;
+    height: 60px;
+}
+
+/* Interactive states */
+
+.functions-panel button {
+    transition: opacity 0.2s ease;
+}
+
+.functions-panel button:hover {
+    opacity: 0.8;
+}
+
+.functions-panel button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
 }
