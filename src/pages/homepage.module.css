@@ -8,11 +8,7 @@
     grid-template-areas: "mainText effects";
 }
 
-.asideAnimation{
-    border: 2px solid black;
-    grid-area: effects;
-    margin-right: 2vw;
-}
+
 
 .underHeader{
     font-size: 20px;
@@ -23,7 +19,7 @@
 }
 
 .nameSection{
-    width: 560px;
+    max-width: 560px; width: 100%;
     margin-left: 2vw;
 }
 
