@@ -5,19 +5,34 @@ import extrema from '../../assets/arrows-verticle.svg'
 import periodicity from '../../assets/graph.svg'
 import calculator from '../../assets/calculator_1.svg'
 
+import { useState } from 'react'
+import type { MathFunction } from "../../types/MathFunction"
+
 import style from './FunctionAnalysis.module.css'
 
-export default function FunctionAnalysis() {
+type FunctionAnalysisProps = {
+    functions: MathFunction[]
+}
+
+export default function FunctionAnalysis({ functions }: FunctionAnalysisProps) {
+    const [selectedId, setSelectedId] = useState<number | null>(null)
+
     return (
         <section className={style['function-analysis']}>
             <h2 className={style['function-analysis__title']}>
                 Function Analysis
             </h2>
 
-            <select className={style['function-analysis__select']} aria-label="Select function to analyze" defaultValue="">
+            <select className={style['function-analysis__select']} aria-label="Select function to analyze" value={selectedId ?? ''} onChange={(event) => setSelectedId(Number(event.target.value))}>
                 <option value="" disabled>
                     Select function
                 </option>
+
+                {functions.filter(func => func.expression.trim()).map(func => (
+                    <option key={func.id} value={func.id}>
+                        {func.expression}
+                    </option>
+                ))}
             </select>
 
             <div className={style['function-analysis__item']}>

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useFunctions } from '../../hooks/useFunction'
 
 import type {MathFunction} from "../../types/MathFunction.ts"
 
@@ -11,8 +10,13 @@ import keyboardShow from '../../assets/keyboard-show.svg'
 
 import style from './Functions.module.css'
 
-export default function Functions() {
-    const { functions, addFunction, toggleVisibility } = useFunctions()
+type FunctionsProps = {
+    functions: MathFunction[]
+    addFunction: (expression: string) => void
+    toggleVisibility: (id: number, visible: boolean) => void
+}
+
+export default function Functions({ functions, addFunction, toggleVisibility }: FunctionsProps) {
     const [input, setInput] = useState('')
 
     function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
