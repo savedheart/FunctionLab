@@ -4,7 +4,7 @@
     box-sizing: border-box;
 
     width: 336px;
-    height: 656px;
+    min-height: 656px;
     padding: 28px;
 
     background-color: var(--color-bar);
@@ -262,9 +262,8 @@
 }
 
 .graph-settings__range input {
-    flex: 1;
+    flex: 1 1 0;
     min-width: 0;
-    width: 0;
     height: 30px;
     box-sizing: border-box;
     padding: 0 6px;

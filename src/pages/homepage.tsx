@@ -24,7 +24,7 @@ function Homepage(){
                     <h1>Function<span className={style.nameHighlight}>Lab</span></h1>
                     <p className={style.underName}>Plot and analyze functions visually.</p>
                     <p className={style.nameDescription}>A modern graphing calculator for exploring functions, multiple equations and mathematical analysis.</p>
-                    <Link to="workpage" className={style.startBtn}>
+                    <Link to="/workpage" className={style.startBtn}>
                         <span>Start</span>
                         <img src={rightArrow} alt=""/>
                     </Link>
