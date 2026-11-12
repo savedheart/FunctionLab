@@ -7,7 +7,7 @@ import style from './workpage.module.css';
 
 export default function Workpage() {
     return (
-        <div className={style.workpage}>
+        <div className={style['workpage']}>
             <Header />
 
             <Functions />
