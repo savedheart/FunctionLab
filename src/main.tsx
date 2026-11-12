@@ -4,7 +4,7 @@ import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom'
 
 import './styles/global.css'
 import Homepage from './pages/homepage'
-import CalculatorPage from './pages/calculatorPage.tsx'
+import Workpage from './pages/workpage.tsx'
 import Page404 from './pages/Page404'
 
 const router = createBrowserRouter([
@@ -17,8 +17,8 @@ const router = createBrowserRouter([
         element: <Homepage />,
     },
     {
-        path: '/calculator',
-        element: <CalculatorPage />
+        path: '/workpage',
+        element: <Workpage />
     },
     {
         path: '*',

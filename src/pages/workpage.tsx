@@ -3,11 +3,11 @@ import Functions from '../components/Functions/Functions';
 import Graph from "../components/Graph/Graph.tsx";
 import FunctionAnalysis from "../components/FunctionAnalysis/FunctionAnalysis.tsx";
 import Footer from '../components/Footer/Footer';
-//import style from './calculatorPage.module.css';
+import style from './workpage.module.css';
 
-export default function CalculatorPage() {
+export default function Workpage() {
     return (
-        <>
+        <div className={style.workpage}>
             <Header />
 
             <Functions />
@@ -15,6 +15,6 @@ export default function CalculatorPage() {
             <FunctionAnalysis />
 
             <Footer />
-        </>
+        </div>
     );
 }
