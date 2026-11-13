@@ -13,7 +13,7 @@ import style from './homepage.module.css'
 
 import { Link } from "react-router-dom";
 
-function Homepage(){
+export default function Homepage(){
     return(
         <>
             <Header/>
@@ -58,5 +58,3 @@ function Homepage(){
         </>
     );
 }
-
-export default Homepage;

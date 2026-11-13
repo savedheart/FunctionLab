@@ -6,7 +6,7 @@ import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
 import dotsVertical from '../../assets/dots-vertical.svg'
 import keyboardShow from '../../assets/keyboard-show.svg'
-// import keyboardHide from '../../assets/keyboard-hide.svg'
+import keyboardHide from '../../assets/keyboard-hide.svg'
 
 import style from './Functions.module.css'
 
@@ -18,6 +18,7 @@ type FunctionsProps = {
 
 export default function Functions({ functions, addFunction, toggleVisibility }: FunctionsProps) {
     const [input, setInput] = useState('')
+    const [keyboardVisible, setKeyboardVisible] = useState(false)
 
     function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -115,8 +116,9 @@ export default function Functions({ functions, addFunction, toggleVisibility }: 
                     type="button"
                     aria-label="Show math keypad"
                     aria-expanded={false}
+                    onClick={() => setKeyboardVisible(prev => !prev)}
                 >
-                    <img src={keyboardShow} alt="" />
+                    <img src={keyboardVisible ? keyboardHide : keyboardShow} alt="" />
                 </button>
             </section>
         </section>
