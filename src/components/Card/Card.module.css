@@ -26,7 +26,6 @@
     justify-content: center;
     gap: 8px;
 
-
     padding: 0px clamp(12px, 10%, 40px);
 }
 
@@ -41,17 +40,17 @@
 
 @media (width <= 1921px) {
     .cardIcon {
-    max-width: 80px;
-    max-height: 80px;
-    flex-shrink: 0;
+        max-width: 80px;
+        max-height: 80px;
+        flex-shrink: 0;
     }
 
     .textTitle{
-    text-align: center;
-    font-size: 1.5em;
+        text-align: center;
+        font-size: 1.5em;
     }
 
     .textParagraph{
-    font-size: 1em;
+        font-size: 1em;
     }
 }
