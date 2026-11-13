@@ -1,0 +1,44 @@
+.workpage {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
+
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+/* Main layout */
+
+.workpage__main {
+    display: grid;
+    grid-template-columns: 336px minmax(0, 1fr) 336px;
+    align-items: stretch;
+    gap: 20px;
+
+    flex: 1;
+    width: 100%;
+    max-width: 1920px;
+    min-height: 0;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Panels */
+
+.workpage__functions,
+.workpage__graph,
+.workpage__analysis {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.workpage__functions > *,
+.workpage__graph > *,
+.workpage__analysis > * {
+    flex: 1;
+    width: 100%;
+}
