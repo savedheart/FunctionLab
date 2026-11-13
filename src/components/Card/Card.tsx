@@ -11,8 +11,8 @@ export default function Card({image, title, paragraph}: CardProps){
         <article className={style.cardContainer}>
             <img src={image} className={style.cardIcon}  alt=""/>
             <div className={style.textContainer}>
-                <h2>{title}</h2>
-                <p>{paragraph}</p>
+                <h2 className={style.textTitle}>{title}</h2>
+                <p className={style.textParagraph}>{paragraph}</p>
             </div>
         </article>
     );

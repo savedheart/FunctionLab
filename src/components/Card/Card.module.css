@@ -1,6 +1,6 @@
 .cardContainer{
     width: clamp(400px, 96%, 600px);
-    height: 200px;
+    height: 100%;
 
     background-color: var(--color-bar);
 
@@ -9,14 +9,15 @@
     border-radius: 20px;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .cardIcon {
-  width: 60px;
-  height: 60px;
+  max-width: 100px;
+  max-height: 100px;
   flex-shrink: 0;
-  margin-left: 20px;
 }
 
 .textContainer{
@@ -25,8 +26,31 @@
     justify-content: center;
     gap: 8px;
 
-    height: 100%;
+    padding: 0px clamp(12px, 10%, 40px);
+}
 
-    padding-left: 20px;
-    padding-right: 60px;
+.textTitle{
+    text-align: center;
+    font-size: 2em;
+}
+
+.textParagraph{
+    font-size: 1.1em;
+}
+
+@media (width <= 1921px) {
+    .cardIcon {
+        max-width: 80px;
+        max-height: 80px;
+        flex-shrink: 0;
+    }
+
+    .textTitle{
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .textParagraph{
+        font-size: 1em;
+    }
 }

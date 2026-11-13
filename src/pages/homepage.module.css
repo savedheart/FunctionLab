@@ -1,11 +1,16 @@
 .main{
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
+
 
 .mainContainer {
     display: grid;
     grid-template-columns: 3fr 7fr;
     grid-template-areas: "mainText effects";
+    gap: clamp(12px, 1%, 20px);
 }
 
 
@@ -48,6 +53,10 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);                            
     padding: 50px 1vw;
+
+    height: 100%;
+
+    flex: 1;
 }
 
 .startBtn{
