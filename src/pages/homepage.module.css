@@ -17,7 +17,7 @@
     font-weight: 400;
     color: var(--color-micro);
     word-spacing: 0.7em;
-    margin: 30px 0px;
+    margin: 30px 0;
 }
 
 .nameSection{
@@ -44,7 +44,7 @@
 .nameDescription{
     font-size: 22px;
     color: var(--color-micro);
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 .cardSection{
@@ -61,7 +61,7 @@
 
     width: 300px;
     height: 60px;
-    margin: 30px 0px;
+    margin: 30px 0;
 
     display: flex;
     align-items: center;
@@ -80,7 +80,7 @@
     max-width: 32px;
 }
 
-@media (width < 1280px) {/*planshet*/
+@media (width < 1280px) {/* tablet */
 
 .main {
     padding: 0 16px;
@@ -94,7 +94,7 @@
 }
 
 .underHeader{
-    margin: 16px 0px;
+    margin: 16px 0;
 }
 
 .nameSection {
@@ -105,7 +105,7 @@
 .startBtn{
     width: 90%;
     height: 60px;
-    margin: 20px 0px;
+    margin: 20px 0;
 
     justify-self: start;
 
@@ -144,13 +144,12 @@
     border: 2px solid var(--color-inputs-borders);
     border-radius: 20px;
 
-    margin: 0;
-    margin-top: 16px;
+    margin: 16px 0 0;
 
     width: 100%;
 }
 .underHeader{
-    margin: 16px 0px;
+    margin: 16px 0;
     text-align: center;
     display: none;
 }
@@ -163,8 +162,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    width: 100%;
 
     align-self: center;
 }
@@ -191,14 +188,14 @@
     grid-template-rows: repeat(4, 1fr); 
     gap: 12px; 
 
-    padding: 16px 0px;
+    padding: 16px 0;
     width: 100%;
 }
 
 .startBtn{
     width: 90%;
     height: 60px;
-    margin: 20px 0px;
+    margin: 20px 0;
 
     justify-self: center;
 
