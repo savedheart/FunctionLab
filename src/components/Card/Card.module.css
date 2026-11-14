@@ -1,5 +1,5 @@
 .cardContainer{
-    width: clamp(400px, 96%, 600px);
+    width: 100%;
     height: 100%;
 
     background-color: var(--color-bar);
@@ -18,6 +18,10 @@
   max-width: 100px;
   max-height: 100px;
   flex-shrink: 0;
+
+  background-color: var(--color-bg);
+  border-radius: 15px;
+  padding: 20px;
 }
 
 .textContainer{
@@ -38,7 +42,7 @@
     font-size: 1.1em;
 }
 
-@media (width <= 1921px) {
+@media (width <= 1920px) {
     .cardIcon {
         max-width: 80px;
         max-height: 80px;
@@ -53,4 +57,57 @@
     .textParagraph{
         font-size: 1em;
     }
+}
+
+@media (width < 1280px) {
+    .cardContainer{
+        width: 100%;
+    }
+    .cardIcon {
+        max-width: 80px;
+        max-height: 80px;
+        flex-shrink: 0;
+        margin: 20px 0px;
+    }
+    .textContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+
+        padding: 0px 20px 20px 20px;
+    }
+}
+
+@media (width <= 768px) {
+    .cardContainer{
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+    .cardIcon {
+        width: 60px;
+        height: 60px;
+        margin-left: 16px;
+        padding: 12px;
+        flex-shrink: 0;
+    }
+    .textContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        padding: 0px;
+        padding-right: 12px;
+    }
+    .textTitle{
+        text-align: unset;
+        font-size: 1.3em;
+    }
+    .textParagraph{
+        font-size: 0.8em;
+    }
+    
 }

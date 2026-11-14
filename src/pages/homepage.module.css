@@ -5,15 +5,12 @@
     min-height: 0;
 }
 
-
 .mainContainer {
     display: grid;
     grid-template-columns: 3fr 7fr;
     grid-template-areas: "mainText effects";
     gap: clamp(12px, 1%, 20px);
 }
-
-
 
 .underHeader{
     font-size: 20px;
@@ -24,8 +21,11 @@
 }
 
 .nameSection{
-    max-width: 560px; width: 100%;
+    max-width: 560px; 
+    width: 100%;
     margin-left: 2vw;
+
+    grid-area: mainText;
 }
 
 .nameSection h1{
@@ -33,8 +33,6 @@
     font-weight: 700;
     color: var(--color-text);
     line-height: 1em;
-
-    grid-area: mainText;
 }
 .nameHighlight{
     color: var(--color-accent);
@@ -53,8 +51,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);                            
     padding: 50px 1vw;
-
-    height: 100%;
+    gap: 20px;
 
     flex: 1;
 }
@@ -81,4 +78,136 @@
 
 .startBtn img{
     max-width: 32px;
+}
+
+@media (width < 1280px) {/*planshet*/
+
+.main {
+    padding: 0 16px;
+}
+
+.mainContainer {
+    grid-template-columns: 1fr; 
+    grid-template-areas:"mainText"
+                        "effects";
+    gap: 20px;
+}
+
+.underHeader{
+    margin: 16px 0px;
+}
+
+.nameSection {
+    max-width: 800px;
+    margin: 0;
+}
+
+.startBtn{
+    width: 90%;
+    height: 60px;
+    margin: 20px 0px;
+
+    justify-self: start;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 12px;
+}
+
+.cardSection{  
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+
+    padding: 20px 0;
+}
+
+}
+
+@media (width <= 768px) { /*mobile*/
+
+.desktopOnly{
+    display: none;
+}
+.main {
+    padding: 0 4px;
+    align-items: center; 
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--color-bar);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 20px;
+
+    margin: 0;
+    margin-top: 16px;
+
+    width: 100%;
+}
+.underHeader{
+    margin: 16px 0px;
+    text-align: center;
+    display: none;
+}
+
+.nameSection{
+    max-width: 560px; width: 100%;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    align-self: center;
+}
+
+.nameSection h1{
+    margin-top: 12px;
+    font-size: 3.5em;
+    text-align: center;
+}
+
+.underName{
+    font-size: 24px;
+    text-align: center;
+}
+.nameDescription{
+    font-size: 18px;
+    margin: 16px 0;
+    color: var(--color-text);
+    width: 90%;
+}
+
+.cardSection{
+    grid-template-columns: 1fr;   
+    grid-template-rows: repeat(4, 1fr); 
+    gap: 12px; 
+
+    padding: 16px 0px;
+    width: 100%;
+}
+
+.startBtn{
+    width: 90%;
+    height: 60px;
+    margin: 20px 0px;
+
+    justify-self: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 12px;
+}
+
 }

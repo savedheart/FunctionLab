@@ -39,3 +39,22 @@
 .headerHighlight{
     color: var(--color-accent);
 }
+
+@media (width <= 768px) {
+    .headerContainer{
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid var(--color-inputs-borders);
+
+    margin: 0;
+    width: 100%;
+    }
+
+    .headerContainer a{
+        margin: 0;
+        margin-left: 12px;
+    }
+    .headerTitle{
+        display: none;
+    }
+}

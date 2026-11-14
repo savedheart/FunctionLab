@@ -35,22 +35,50 @@ export default function Homepage(){
                     <Card
                         image = {graphIcon}
                         title='Plot Graphs'
-                        paragraph='Visualize mathematical functions with high-precision, interactive 2D rendering. Pan and zoom seamlessly across the coordinate plane with instant 60 FPS real-time graph calculation.'                          
+                        paragraph={
+                                    <>
+                                        Visualize mathematical functions with high-precision 2D rendering.
+                                        <span className={style.desktopOnly}>
+                                            {" "}Pan and zoom seamlessly across the coordinate plane with instant 60 FPS real-time calculation.
+                                        </span>
+                                    </>
+                                }                          
                     />
                     <Card
                         image = {picklistIcon}
                         title='Multiple Functions'
-                        paragraph='Plot, layer, and compare dozens of equations simultaneously on a single unified canvas. Customize individual color palettes and easily toggle layer visibility to study function interactions.'                          
+                        paragraph={
+                                    <>
+                                        Plot and compare multiple equations simultaneously on a single canvas.
+                                        <span className={style.desktopOnly}>
+                                            {" "}Customize individual color palettes and toggle layer visibility to study complex interactions.
+                                        </span>
+                                    </>
+                                    }                          
                     />
                     <Card
                         image = {magnifierIcon}
                         title='Analyze Functions'
-                        paragraph='Examine critical mathematical properties including roots, extrema, intervals, and asymptotes. Unlock built-in calculus tools to evaluate derivatives, limits, and integral areas on the fly.'                          
+                        paragraph={
+                                    <>
+                                        Examine critical mathematical properties including roots, extrema, and asymptotes.
+                                        <span className={style.desktopOnly}>
+                                            {" "}Unlock built-in calculus tools to evaluate derivatives, limits, and integral areas on the fly.
+                                        </span>
+                                    </>
+                                    }                          
                     />
                     <Card
                         image = {aimIcon}
                         title='Point Inspection'
-                        paragraph='Trace along curves with magnetic coordinate snapping to pinpoint exact intercepts and intersections. Hover to inspect values dynamically with precise floating coordinate tooltips.'                          
+                        paragraph={
+                                    <>
+                                        Trace along curves with coordinate snapping to pinpoint exact intercepts.
+                                        <span className={style.desktopOnly}>
+                                            {" "}Hover to inspect values dynamically with precise floating coordinate tooltips.
+                                        </span>
+                                    </>
+                                    }                         
                     />
                 </section>
             </main>
