@@ -1,9 +1,10 @@
 import style from './Card.module.css'
+import type { ReactNode } from 'react';
 
 interface CardProps{
     image?: string;
     title: string;
-    paragraph: string;
+    paragraph: ReactNode;
 }
 
 export default function Card({image, title, paragraph}: CardProps){

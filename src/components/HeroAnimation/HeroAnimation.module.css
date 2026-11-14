@@ -10,6 +10,7 @@
 }
 
 .asideAnimation {
+    min-height: 200px;
     grid-area: effects;
     margin-right: 2vw;
     background-color: hsl(225, 15%, 9%);
@@ -56,4 +57,17 @@
   fill: none;
   stroke: currentColor;
   stroke-width: 3px;
+}
+
+@media (width < 1280px) {
+  .asideAnimation {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (width <= 768px) {
+  .asideAnimation {
+    display: none;
+  }
 }
