@@ -1,0 +1,87 @@
+.keypad-panel {
+    display: flex;
+    gap: 28px;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+
+    background-color: var(--color-bar);
+    border: 1px solid var(--color-inputs-borders);
+    border-radius: 20px;
+}
+
+/* Basic keypad, Expanded keypad */
+
+.keypad-panel__basic,
+.keypad-panel__expanded {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+
+    flex: 1;
+    min-width: 0;
+}
+
+/* Rows */
+
+.basic__row-1,
+.basic__row-2,
+.basic__row-3,
+.basic__row-4,
+.expanded__row-1,
+.expanded__row-2,
+.expanded__row-3,
+.expanded__row-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+/* Buttons */
+
+.keypad-panel__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 120px;
+    padding: 0;
+
+    background-color: var(--color-accent);
+    border: 1px solid var(--color-inputs-borders);
+    border-radius: 15px;
+
+    color: var(--color-bg);
+    font-family: inherit;
+    font-size: 48px;
+    font-weight: 700;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: background-color 0.15s ease;
+}
+
+/* Large buttons */
+
+.keypad-panel__button--large {
+    grid-column: span 2;
+    aspect-ratio: auto;
+}
+
+.keypad-panel__button--large img {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+/* Superscript */
+
+.keypad-panel__button sup {
+    font-size: 0.55em;
+}

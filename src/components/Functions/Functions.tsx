@@ -14,11 +14,12 @@ type FunctionsProps = {
     functions: MathFunction[]
     addFunction: (expression: string) => void
     toggleVisibility: (id: number, visible: boolean) => void
+    keypadVisible: boolean
+    toggleKeypad: () => void
 }
 
-export default function Functions({ functions, addFunction, toggleVisibility }: FunctionsProps) {
+export default function Functions({ functions, addFunction, toggleVisibility, keypadVisible, toggleKeypad }: FunctionsProps) {
     const [input, setInput] = useState('')
-    const [keyboardVisible, setKeyboardVisible] = useState(false)
 
     function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -114,11 +115,12 @@ export default function Functions({ functions, addFunction, toggleVisibility }: 
                 <button
                     className={style['math-keypad__toggle']}
                     type="button"
-                    aria-label="Show math keypad"
-                    aria-expanded={false}
-                    onClick={() => setKeyboardVisible(prev => !prev)}
+                    aria-label={keypadVisible ? 'Hide math keypad' : 'Show math keypad'}
+                    aria-expanded={keypadVisible}
+                    aria-controls="math-keypad-panel"
+                    onClick={toggleKeypad}
                 >
-                    <img src={keyboardVisible ? keyboardHide : keyboardShow} alt="" />
+                    <img src={keypadVisible ? keyboardHide : keyboardShow} alt="" />
                 </button>
             </section>
         </section>
