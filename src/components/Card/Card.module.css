@@ -8,10 +8,15 @@
     border-color: var(--color-inputs-borders);
     border-radius: 20px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    grid-row: 1 / -1;   
+    display: grid;
+    grid-template-rows: subgrid;
+    justify-items: center;
+    align-items: start;
+
+    padding-top: clamp(24px, 4vh, 52px);
+    padding-bottom: clamp(20px, 3vh, 36px);
+    gap: clamp(16px, 2.5vh, 32px);
 }
 
 .cardIcon {
@@ -22,15 +27,19 @@
   background-color: var(--color-bg);
   border-radius: 15px;
   padding: 20px;
+
+  grid-row: 2;
 }
 
 .textContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
 
     padding: 0px clamp(12px, 10%, 40px);
+
+    grid-row: 3;
 }
 
 .textTitle{
@@ -44,8 +53,6 @@
 
 @media (width <= 1920px) {
     .cardIcon {
-        max-width: 80px;
-        max-height: 80px;
         flex-shrink: 0;
     }
 
@@ -60,14 +67,19 @@
 }
 
 @media (width < 1280px) {
-    .cardContainer{
-        width: 100%;
+    .cardContainer {
+        grid-row: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center;
+        padding: 24px 16px;
     }
     .cardIcon {
         max-width: 80px;
         max-height: 80px;
         flex-shrink: 0;
-        margin: 20px 0px;
+        /*margin: 20px 0px;*/
     }
     .textContainer{
         display: flex;
@@ -86,6 +98,7 @@
         align-items: center;
         justify-content: flex-start;
         gap: 12px;
+        padding: 12px 0;
     }
     .cardIcon {
         width: 60px;

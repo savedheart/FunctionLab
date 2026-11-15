@@ -47,12 +47,12 @@
     margin: 10px 0;
 }
 
-.cardSection{
+.cardSection {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);                            
-    padding: 50px 1vw;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: minmax(20px, 1fr) auto auto minmax(20px, 1fr);
     gap: 20px;
-
+    padding: 30px 2vw;
     flex: 1;
 }
 
@@ -119,6 +119,7 @@
 
 .cardSection{  
     grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: auto;
     gap: 12px; 
 
     padding: 20px 0;
@@ -183,11 +184,11 @@
     width: 90%;
 }
 
-.cardSection{
-    grid-template-columns: 1fr;   
-    grid-template-rows: repeat(4, 1fr); 
-    gap: 12px; 
-
+.cardSection {
+    flex: 0 0 auto;   
+    grid-template-columns: 1fr;
+    grid-template-rows: auto; 
+    gap: 12px;
     padding: 16px 0;
     width: 100%;
 }

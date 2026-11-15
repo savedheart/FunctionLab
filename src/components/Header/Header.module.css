@@ -42,19 +42,24 @@
 
 @media (width <= 768px) {
     .headerContainer{
-    border-radius: 0;
-    border: none;
-    border-bottom: 2px solid var(--color-inputs-borders);
+        border-radius: 0;
+        border: none;
+        border-bottom: 2px solid var(--color-inputs-borders);
 
-    margin: 0;
-    width: 100%;
+        margin: 0;
+        width: 100%;
+        height: 48px;
     }
 
     .headerContainer a{
         margin: 0;
         margin-left: 12px;
+        width: 40px;
+        height: 40px;
+        gap: 4px;
     }
     .headerTitle{
-        display: none;
+        font-size: 0.6em;
     }
+
 }
