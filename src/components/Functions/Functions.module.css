@@ -336,3 +336,45 @@
     outline: 2px solid var(--color-accent);
     outline-offset: 4px;
 }
+
+/* Планшети та мобільні пристрої */
+
+@media (width <= 1024px) {
+    .functions-panel {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
+    }
+
+    /* На вузьких екранах переводимо кнопку клавіатури в компактний рядок */
+    .math-keypad {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .math-keypad__title {
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .math-keypad__toggle img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (width <= 480px) {
+    .functions-panel {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .functions-panel__title {
+        font-size: 20px;
+    }
+
+    .graph-settings__range {
+        flex-wrap: wrap;
+    }
+}

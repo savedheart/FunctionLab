@@ -102,3 +102,42 @@
     color: var(--color-text);
     font: inherit;
 }
+
+/* Планшети та мобільні пристрої */
+
+@media (width <= 1024px) {
+    .function-analysis {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .function-analysis__title {
+        margin-top: 0;
+    }
+}
+
+@media (width <= 480px) {
+    .function-analysis {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .function-analysis__title {
+        font-size: 20px;
+    }
+
+    .function-analysis__item {
+        padding: 10px 12px;
+    }
+
+    .function-analysis__item p {
+        margin-left: 0;
+        font-size: 14px;
+    }
+
+    .function-analysis__calculator {
+        margin-left: 0;
+        flex-wrap: wrap;
+        font-size: 14px;
+    }
+}
