@@ -1,28 +1,12 @@
-export type Operator = '+' | '-' | '*' | '/' | '^' | '=' | '<' | '>' | '<=' | '>='
-
-const functionNames = [
-    'sin', 'cos', 'tan', 'cot',
-    'asin', 'acos', 'atan', 'acot',
-    'arcsin', 'arccos', 'arctan', 'arccot',
-    'sinh', 'cosh', 'tanh', 'tgh', 'coth',
-    'sqrt', 'abs', 'ln', 'log', 'exp',
-] as const
-
-export type FunctionName = typeof functionNames[number]
+import { functionNames } from '../constants/functionNames.ts'
+import type { FunctionName } from '../constants/functionNames.ts'
+import type { Operator, Token } from '../types/Token.ts'
 
 const functionNameSet = new Set<string>(functionNames)
 
 function isFunctionName(value: string): value is FunctionName {
     return functionNameSet.has(value)
 }
-
-export type Token =
-    | { type: 'number'; value: number; raw: string; position: number }
-    | { type: 'identifier'; value: string; position: number }
-    | { type: 'function'; value: FunctionName; position: number }
-    | { type: 'operator'; value: Operator; position: number }
-    | { type: 'leftParen'; position: number }
-    | { type: 'rightParen'; position: number }
 
 export class TokenizeError extends Error {
     readonly position: number

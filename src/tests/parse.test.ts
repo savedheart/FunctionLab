@@ -1,5 +1,5 @@
 import { parse, ParseError } from "../utils/parse.ts"
-import type { Expression } from "../utils/parse.ts"
+import type { Expression } from '../types/Expression.ts'
 
 function assertEqual(actual: unknown, expected: unknown) {
     if (JSON.stringify(actual) !== JSON.stringify(expected)) {

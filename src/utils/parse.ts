@@ -1,14 +1,6 @@
 import { tokenize } from './tokenize.ts'
-import type { FunctionName, Operator, Token } from './tokenize.ts'
-
-type BinaryOperator = Extract<Operator, '+' | '-' | '*' | '/' | '^'>
-
-export type Expression =
-    | { type: 'number', value: number }
-    | { type: 'identifier', name: string }
-    | { type: 'unary', operator: '+' | '-', operand: Expression }
-    | { type: 'binary', operator: BinaryOperator, left: Expression, right: Expression }
-    | { type: 'call', name: FunctionName, argument: Expression }
+import type { Operator, Token } from '../types/Token.ts'
+import type { BinaryOperator, Expression } from '../types/Expression.ts'
 
 export class ParseError extends Error {
     readonly position: number

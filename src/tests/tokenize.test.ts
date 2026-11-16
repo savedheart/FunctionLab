@@ -1,5 +1,5 @@
 import { tokenize, TokenizeError } from '../utils/tokenize.ts'
-import type { Token } from '../utils/tokenize.ts'
+import type { Token } from '../types/Token.ts'
 
 function assertEqual(actual: unknown, expected: unknown) {
     if (JSON.stringify(actual) !== JSON.stringify(expected)) {
