@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import type { MathFunction } from "../types/MathFunction"
 
-const functionColors: MathFunction['color'][] = [
-    'green',
-    'cyan',
-    'purple',
-    'red'
-]
+const functionColors: MathFunction['color'][] = ['green', 'cyan', 'purple', 'red', 'orange', 'pink', 'blue', 'yellow', 'teal', 'magenta', 'lime', 'coral', 'indigo', 'gold', 'violet']
 
 export function useFunctions() {
     const [functions, setFunctions] = useState<MathFunction[]>([
