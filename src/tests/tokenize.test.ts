@@ -145,5 +145,4 @@ test('Reports invalid characters and overflowing numbers', () => {
         assertEqual(caught.position, position)
     }
 })
-
 console.log('All tokenizer tests passed.')
