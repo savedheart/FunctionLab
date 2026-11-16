@@ -7,22 +7,26 @@ import style from './Graph.module.css'
 export default function Graph() {
     return (
         <section className={style.graph} aria-label="Function graph">
-            <div className={style.graph__toolbar} aria-label="Graph controls">
-                <button type="button" className={style.graph__button} aria-label="Zoom in">
-                    <img src={plus} alt="" />
-                </button>
+            <div className={style.graph__header}>
+                <h2 className={style.graph__title}>Graph</h2>
 
-                <button type="button" className={style.graph__button} aria-label="Zoom out">
-                    <img src={minus} alt="" />
-                </button>
+                <div className={style.graph__toolbar} aria-label="Graph controls">
+                    <button type="button" className={style.graph__button} aria-label="Zoom in">
+                        <img src={plus} alt="" />
+                    </button>
 
-                <button type="button" className={style.graph__button} aria-label="Enter fullscreen">
-                    <img src={fullscreen} alt="" />
-                </button>
+                    <button type="button" className={style.graph__button} aria-label="Zoom out">
+                        <img src={minus} alt="" />
+                    </button>
 
-                <button type="button" className={style.graph__button} aria-label="Reset view">
-                    <img src={reset} alt="" />
-                </button>
+                    <button type="button" className={style.graph__button} aria-label="Enter fullscreen">
+                        <img src={fullscreen} alt="" />
+                    </button>
+
+                    <button type="button" className={style.graph__button} aria-label="Reset view">
+                        <img src={reset} alt="" />
+                    </button>
+                </div>
             </div>
 
             <div className={style.graph__viewport}>

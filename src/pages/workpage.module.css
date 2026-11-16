@@ -2,7 +2,9 @@
     display: flex;
     flex-direction: column;
 
+    width: 100%;
     min-height: 100vh;
+    overflow-x: hidden;
     background-color: var(--color-bg);
     color: var(--color-text);
 }
@@ -14,7 +16,7 @@
     grid-template-columns: 300px minmax(0, 1fr) 300px;
     grid-template-rows: minmax(0, 1fr) auto;
     align-items: stretch;
-    gap: 30px;
+    gap: 12px;
 
     flex: 1;
     width: 98%;
@@ -58,4 +60,149 @@
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
+}
+
+/* Intro (показуємо на планшетах і мобілці, як у макеті Figma) */
+
+.workpage__intro {
+    display: none;
+}
+
+.workpage__intro-title {
+    margin: 0 0 6px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+}
+
+.workpage__intro-subtitle {
+    margin: 0;
+    font-size: 16px;
+    color: var(--color-micro);
+}
+
+/* Кнопки бокових панелей (візуально поверх графіка на 1025px–1440px) */
+
+.workpage__graph > .workpage__panel-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    width: auto;
+    height: auto;
+    padding: 12px 16px;
+
+    background-color: var(--color-bar);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.workpage__graph > .workpage__panel-toggle:hover {
+    border-color: var(--color-accent);
+}
+
+.workpage__panel-toggle img {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.workpage__panel-toggle--left {
+    left: 20px;
+}
+
+.workpage__panel-toggle--right {
+    right: 20px;
+}
+
+/* Малі ноутбуки та екрани між планшетом і 1080p (1025px – 1440px) */
+
+@media (1024px < width <= 1440px) {
+    .workpage__main {
+        grid-template-columns: 1fr;
+    }
+
+    .workpage__functions,
+    .workpage__analysis {
+        display: none;
+    }
+
+    .workpage__graph {
+        position: relative;
+    }
+
+    .workpage__graph > .workpage__panel-toggle {
+        display: flex;
+    }
+}
+
+/* Планшети та мобільні пристрої */
+
+@media (width <= 1024px) {
+    .workpage__main {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        width: 100%;
+        padding: 16px;
+    }
+
+    /* Чіткий порядок блоків зверху вниз */
+    .workpage__intro {
+        display: block;
+        order: 1;
+    }
+
+    .workpage__functions {
+        order: 2;
+    }
+
+    /* Клавіатура відкривається прямо під панеллю функцій */
+    .workpage__keypad {
+        order: 3;
+    }
+
+    .workpage__graph {
+        order: 4;
+    }
+
+    .workpage__analysis {
+        order: 5;
+    }
+
+    .workpage__functions > *,
+    .workpage__graph > *,
+    .workpage__analysis > * {
+        height: auto;
+    }
+}
+
+@media (width <= 480px) {
+    .workpage__main {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .workpage__intro-title {
+        font-size: 26px;
+    }
+
+    .workpage__intro-subtitle {
+        font-size: 14px;
+    }
 }

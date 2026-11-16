@@ -1,7 +1,6 @@
 .graph{
-    width: 98%;
+    width: 100%;
     height: 800px;
-    margin: 0 1%;
     padding: 20px 0;
 
     display: flex;
@@ -14,16 +13,33 @@
     border-radius: 20px;
 }
 
+.graph__header{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 0 2% 20px;
+}
+
+.graph__title{
+    display: none;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
 .graph__toolbar{
     display: flex;
-    align-self: flex-end;
     gap: 12px;
     height: fit-content;
-
-    padding: 0 2% 20px 0;
 }
 
 .graph__button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border: 2px solid var(--color-inputs-borders);
     border-radius: 12px;
 
@@ -45,4 +61,64 @@
 
     border: 2px solid var(--color-inputs-borders);
     border-radius: 20px;
+}
+
+/* Малі ноутбуки (1025px – 1440px): розтягуємо графік на всю доступну висоту й ширину */
+
+@media (1024px < width <= 1440px) {
+    .graph {
+        height: 100%;
+        min-height: 480px;
+        margin: 0;
+    }
+}
+
+/* Планшети та мобільні пристрої */
+
+@media (width <= 1024px) {
+    .graph {
+        height: auto;
+        margin: 0;
+        padding: 16px;
+    }
+
+    .graph__header {
+        justify-content: space-between;
+        padding: 0 0 12px 0;
+    }
+
+    .graph__title {
+        display: block;
+    }
+
+    .graph__viewport {
+        width: 100%;
+        height: 400px;
+        border-radius: 16px;
+    }
+}
+
+@media (width <= 480px) {
+    .graph {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .graph__toolbar {
+        gap: 8px;
+    }
+
+    .graph__button {
+        width: 38px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .graph__button img {
+        max-width: 16px;
+    }
+
+    .graph__viewport {
+        height: 320px;
+    }
 }
