@@ -4,6 +4,7 @@ import intercepts from '../../assets/aim.svg'
 import extrema from '../../assets/arrows-verticle.svg'
 import periodicity from '../../assets/graph.svg'
 import calculator from '../../assets/calculator_1.svg'
+import hideToRight from '../../assets/hide-sidebar-toRight.svg'
 
 import { useState } from 'react'
 import type { MathFunction } from "../../types/MathFunction"
@@ -12,16 +13,30 @@ import style from './FunctionAnalysis.module.css'
 
 type FunctionAnalysisProps = {
     functions: MathFunction[]
+    onCollapse?: () => void
 }
 
-export default function FunctionAnalysis({ functions }: FunctionAnalysisProps) {
+export default function FunctionAnalysis({ functions, onCollapse }: FunctionAnalysisProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null)
 
     return (
         <section className={style['function-analysis']}>
-            <h2 className={style['function-analysis__title']}>
-                Function Analysis
-            </h2>
+            <div className={style['function-analysis__header']}>
+                <h2 className={style['function-analysis__title']}>
+                    Function Analysis
+                </h2>
+
+                {onCollapse && (
+                    <button
+                        type="button"
+                        className={style['function-analysis__collapse']}
+                        onClick={onCollapse}
+                        aria-label="Hide analysis panel"
+                    >
+                        <img src={hideToRight} alt="" />
+                    </button>
+                )}
+            </div>
 
             <select className={style['function-analysis__select']} aria-label="Select function to analyze" value={selectedId ?? ''} onChange={(event) => setSelectedId(Number(event.target.value))}>
                 <option value="" disabled>

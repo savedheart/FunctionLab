@@ -11,15 +11,27 @@ export default function Graph() {
                 <h2 className={style.graph__title}>Graph</h2>
 
                 <div className={style.graph__toolbar} aria-label="Graph controls">
-                    <button type="button" className={style.graph__button} aria-label="Zoom in">
+                    <button
+                        type="button"
+                        className={`${style.graph__button} ${style['graph__button--mobile-only']}`}
+                        aria-label="Zoom in"
+                    >
                         <img src={plus} alt="" />
                     </button>
 
-                    <button type="button" className={style.graph__button} aria-label="Zoom out">
+                    <button
+                        type="button"
+                        className={`${style.graph__button} ${style['graph__button--mobile-only']}`}
+                        aria-label="Zoom out"
+                    >
                         <img src={minus} alt="" />
                     </button>
 
-                    <button type="button" className={style.graph__button} aria-label="Enter fullscreen">
+                    <button
+                        type="button"
+                        className={`${style.graph__button} ${style['graph__button--mobile-only']}`}
+                        aria-label="Enter fullscreen"
+                    >
                         <img src={fullscreen} alt="" />
                     </button>
 

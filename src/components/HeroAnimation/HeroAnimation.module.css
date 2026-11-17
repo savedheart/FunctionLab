@@ -10,7 +10,8 @@
 }
 
 .asideAnimation {
-    min-height: 200px;
+    min-height: 360px;
+    height: 100%;
     grid-area: effects;
     margin-right: 2vw;
     background-color: hsl(225, 15%, 9%);
@@ -62,6 +63,8 @@
 @media (width < 1280px) {
   .asideAnimation {
     width: 100%;
+    min-height: 220px;
+    height: auto;
     margin: 0;
   }
 }

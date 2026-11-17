@@ -6,10 +6,13 @@
 }
 
 .mainContainer {
+    flex: 1;
     display: grid;
     grid-template-columns: 3fr 7fr;
     grid-template-areas: "mainText effects";
+    align-items: stretch;
     gap: clamp(12px, 1%, 20px);
+    padding: clamp(12px, 2vh, 28px) 0;
 }
 
 .underHeader{
@@ -17,7 +20,7 @@
     font-weight: 400;
     color: var(--color-micro);
     word-spacing: 0.7em;
-    margin: 30px 0;
+    margin: 0 0 24px;
 }
 
 .nameSection{
@@ -26,6 +29,9 @@
     margin-left: 2vw;
 
     grid-area: mainText;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .nameSection h1{
@@ -50,10 +56,10 @@
 .cardSection {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: minmax(20px, 1fr) auto auto minmax(20px, 1fr);
+    grid-template-rows: 16px auto auto 16px;
     gap: 20px;
-    padding: 30px 2vw;
-    flex: 1;
+    padding: 16px 2vw 28px;
+    flex: 0 0 auto;
 }
 
 .startBtn{
@@ -87,10 +93,12 @@
 }
 
 .mainContainer {
+    flex: none;
     grid-template-columns: 1fr; 
     grid-template-areas:"mainText"
                         "effects";
     gap: 20px;
+    padding: 0;
 }
 
 .underHeader{

@@ -7,5 +7,9 @@ export function useKeypad() {
         setKeypadVisible(prev => !prev)
     }
 
-    return { keypadVisible, toggleKeypad }
+    function closeKeypad() {
+        setKeypadVisible(false)
+    }
+
+    return { keypadVisible, toggleKeypad, closeKeypad }
 }
