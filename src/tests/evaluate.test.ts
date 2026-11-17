@@ -3,7 +3,15 @@ import { parse } from '../utils/parse.ts'
 import { evaluate, EvaluationError } from '../utils/evaluate.ts'
 import type { Variables } from '../types/Variables.ts'
 
-function assertClose(actual: number, expected: number): void {
+function assertClose(actual: number | null, expected: number | null): void {
+    if (actual === null || expected === null) {
+        if (actual !== expected) {
+            throw new Error(`Expected ${expected}, received ${actual}`)
+        }
+
+        return
+    }
+
     if (Object.is(actual, expected)) return
 
     const tolerance = 1e-12 * Math.max(1, Math.abs(expected))
@@ -13,7 +21,7 @@ function assertClose(actual: number, expected: number): void {
     }
 }
 
-const cases: Array<[string, number, Variables?]> = [
+const cases: Array<[string, number | null, Variables?]> = [
     ['42', 42],
     ['2 + 3 * 4', 14],
     ['(2 + 3) * 4', 20],
@@ -30,10 +38,24 @@ const cases: Array<[string, number, Variables?]> = [
     ['ln(e)', 1],
     ['log(100)', 2],
     ['pi', 3, { pi: 3 }],
-    ['1 / 0', Infinity],
-    ['sqrt(-1)', NaN],
-    ['ln(-1)', NaN],
-    ['0 / 0', NaN],
+    ['1 / 0', null],
+    ['-1 / 0', null],
+    ['0 / 0', null],
+    ['sqrt(-1)', null],
+    ['ln(0)', null],
+    ['ln(-1)', null],
+    ['log(0)', null],
+    ['log(-10)', null],
+    ['asin(2)', null],
+    ['acos(-2)', null],
+    ['cot(0)', null],
+    ['coth(0)', null],
+    ['(-1)^0.5', null],
+    ['0^-1', null],
+    ['10^1000', null],
+    ['exp(1000)', null],
+    ['atan(1 / 0)', null],
+    ['1 / (1 / 0)', null],
     ['cos(0)', 1],
     ['tan(0)', 0],
     ['cot(pi / 4)', 1],
@@ -55,7 +77,7 @@ for (const [source, expected, variables] of cases) {
 for (const name of functionNames) {
     const result = evaluate(parse(`${name}(0.5)`))
 
-    if (!Number.isFinite(result)) {
+    if (result === null || !Number.isFinite(result)) {
         throw new Error(`Expected a finite result for ${name}(0.5)`)
     }
 }
@@ -67,6 +89,7 @@ const invalidCases: Array<[string, Variables?]> = [
     ['toString'],
     ['x', { x: Infinity }],
     ['x', { x: NaN }],
+    ['1 / 0 + y'],
 ]
 
 for (const [source, variables] of invalidCases) {

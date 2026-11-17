@@ -16,11 +16,20 @@ function assertNever(value: never): never {
     )
 }
 
-export function evaluate(expression: Expression, variables: Variables = {}) : number {
-    function visit(node: Expression): number {
+function toFiniteOrNull(value: number): number | null {
+    return Number.isFinite(value) ? value : null
+}
+
+/**
+ * Evaluates a parsed AST for the given variable bindings.
+ * Returns `null` when an operation falls outside the real domain or produces a non-finite value.
+ * Throws `EvaluationError` for unknown identifiers or non-finite variable inputs.
+ */
+export function evaluate(expression: Expression, variables: Variables = {}): number | null {
+    function visit(node: Expression): number | null {
         switch (node.type) {
             case 'number':
-                return node.value
+                return toFiniteOrNull(node.value)
 
             case 'identifier': {
                 if (Object.hasOwn(variables, node.name)) {
@@ -43,11 +52,15 @@ export function evaluate(expression: Expression, variables: Variables = {}) : nu
             case 'unary': {
                 const operand = visit(node.operand)
 
+                if (operand === null) {
+                    return null
+                }
+
                 switch (node.operator) {
                     case '+':
                         return operand
                     case '-':
-                        return -operand
+                        return toFiniteOrNull(-operand)
                     default:
                         return assertNever(node)
                 }
@@ -57,24 +70,36 @@ export function evaluate(expression: Expression, variables: Variables = {}) : nu
                 const left = visit(node.left)
                 const right = visit(node.right)
 
+                // Check both sides before propagating null so invalid identifiers still throw EvaluationError.
+                if (left === null || right === null) {
+                    return null
+                }
+
                 switch (node.operator) {
                     case '+':
-                        return left + right
+                        return toFiniteOrNull(left + right)
                     case '-':
-                        return left - right
+                        return toFiniteOrNull(left - right)
                     case '*':
-                        return left * right
+                        return toFiniteOrNull(left * right)
                     case '/':
-                        return left / right
+                        return right === 0 ? null : toFiniteOrNull(left / right)
                     case '^':
-                        return left ** right
+                        return toFiniteOrNull(left ** right)
                     default:
                         return assertNever(node)
                 }
             }
 
-            case 'call':
-                return mathFunctions[node.name](visit(node.argument))
+            case 'call': {
+                const argument = visit(node.argument)
+
+                if (argument === null) {
+                    return null
+                }
+
+                return toFiniteOrNull(mathFunctions[node.name](argument))
+            }
 
             default:
                 return assertNever(node)
