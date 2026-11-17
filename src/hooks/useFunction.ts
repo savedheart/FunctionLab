@@ -4,14 +4,9 @@ import type { MathFunction } from "../types/MathFunction"
 const functionColors: MathFunction['color'][] = ['green', 'cyan', 'purple', 'red', 'orange', 'pink', 'blue', 'yellow', 'teal', 'magenta', 'lime', 'coral', 'indigo', 'gold', 'violet']
 
 export function useFunctions() {
-    const [functions, setFunctions] = useState<MathFunction[]>([
-        { id: 1, expression: '', color: 'green', visible: true },
-        { id: 2, expression: '', color: 'cyan', visible: true },
-        { id: 3, expression: '', color: 'purple', visible: true },
-        { id: 4, expression: '', color: 'red', visible: true }
-    ])
+    const [functions, setFunctions] = useState<MathFunction[]>([])
 
-    const [nextId, setNextId] = useState(5)
+    const [nextId, setNextId] = useState(1)
 
     function addFunction(expression: string) {
         if (!expression.trim()) return

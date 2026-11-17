@@ -7,6 +7,8 @@ import eyeHide from '../../assets/eye-hide.svg'
 import dotsVertical from '../../assets/dots-vertical.svg'
 import keyboardShow from '../../assets/keyboard-show.svg'
 import keyboardHide from '../../assets/keyboard-hide.svg'
+import hideToLeft from '../../assets/hide-sidebar-toLeft.svg'
+import resetIcon from '../../assets/reset.svg'
 
 import style from './Functions.module.css'
 
@@ -16,9 +18,10 @@ type FunctionsProps = {
     toggleVisibility: (id: number, visible: boolean) => void
     keypadVisible: boolean
     toggleKeypad: () => void
+    onCollapse?: () => void
 }
 
-export default function Functions({ functions, addFunction, toggleVisibility, keypadVisible, toggleKeypad }: FunctionsProps) {
+export default function Functions({ functions, addFunction, toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
     const [input, setInput] = useState('')
 
     function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
@@ -32,9 +35,22 @@ export default function Functions({ functions, addFunction, toggleVisibility, ke
 
     return (
         <section className={style['functions-panel']} aria-labelledby="functions-title">
-            <h2 id="functions-title" className={style['functions-panel__title']}>
-                Functions
-            </h2>
+            <div className={style['functions-panel__header']}>
+                {onCollapse && (
+                    <button
+                        type="button"
+                        className={style['functions-panel__collapse']}
+                        onClick={onCollapse}
+                        aria-label="Hide functions panel"
+                    >
+                        <img src={hideToLeft} alt="" />
+                    </button>
+                )}
+
+                <h2 id="functions-title" className={style['functions-panel__title']}>
+                    Functions
+                </h2>
+            </div>
 
             <form className={style['functions-panel__form']} onSubmit={handleAddFunction}>
                 <input
@@ -51,46 +67,59 @@ export default function Functions({ functions, addFunction, toggleVisibility, ke
                 </button>
             </form>
 
-            <div className={style['functions-list']}>
-                <ul className={style['functions-list__items']}>
-                    {functions.map((func: MathFunction) => (
-                        <li className={style['functions-list__item']} key={func.id}>
-                            <span className={`${style['functions-list__color']} ${style[`functions-list__color--${func.color}`]}`} />
+            {functions.length > 0 && (
+                <div className={style['functions-list']}>
+                    <ul className={style['functions-list__items']}>
+                        {functions.map((func: MathFunction) => (
+                            <li className={style['functions-list__item']} key={func.id}>
+                                <span className={`${style['functions-list__color']} ${style[`functions-list__color--${func.color}`]}`} />
 
-                            <label className={style['functions-list__visibility-button']}>
-                                <input
-                                    type="checkbox"
-                                    checked={func.visible}
-                                    onChange={(event) => toggleVisibility(func.id, event.target.checked)}
-                                    aria-label={`Show function ${func.expression || func.id}`}
-                                />
+                                <label className={style['functions-list__visibility-button']}>
+                                    <input
+                                        type="checkbox"
+                                        checked={func.visible}
+                                        onChange={(event) => toggleVisibility(func.id, event.target.checked)}
+                                        aria-label={`Show function ${func.expression || func.id}`}
+                                    />
 
-                                <img src={func.visible ? eyeShow : eyeHide} alt="" />
-                            </label>
+                                    <img src={func.visible ? eyeShow : eyeHide} alt="" />
+                                </label>
 
-                            <span className={style['functions-list__expression']}>
-                                {func.expression}
-                            </span>
+                                <span className={style['functions-list__expression']}>
+                                    {func.expression}
+                                </span>
 
-                            <button
-                                className={style['functions-list__options-button']}
-                                type="button"
-                                aria-label={`Options for function ${func.id}`}
-                            >
-                                <img src={dotsVertical} alt="" />
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+                                <button
+                                    className={style['functions-list__options-button']}
+                                    type="button"
+                                    aria-label={`Options for function ${func.id}`}
+                                >
+                                    <img src={dotsVertical} alt="" />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <section className={style['graph-settings']} aria-labelledby="graph-settings-title">
                 <h3 id="graph-settings-title">Graph Settings</h3>
 
-                <label className={style['graph-settings__grid-toggle']}>
-                    <input type="checkbox" defaultChecked />
-                    <span>Show grid</span>
-                </label>
+                <div className={style['graph-settings__actions']}>
+                    <label className={style['graph-settings__grid-toggle']}>
+                        <input type="checkbox" defaultChecked />
+                        <span>Show grid</span>
+                    </label>
+
+                    <button
+                        type="button"
+                        className={style['graph-settings__reset']}
+                        aria-label="Reset graph view"
+                    >
+                        <img src={resetIcon} alt="" />
+                        <span>Reset</span>
+                    </button>
+                </div>
 
                 <div className={style['graph-settings__range']}>
                     <span>X range</span>

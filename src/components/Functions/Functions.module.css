@@ -4,22 +4,55 @@
     box-sizing: border-box;
 
     width: 336px;
-    min-height: 656px;
+    max-height: 100%;
+    overflow-y: auto;
     padding: 28px;
 
     background-color: var(--color-bar);
     border: 2px solid var(--color-inputs-borders);
-    border-radius: 20px;
+    border-left: none;
+    border-radius: 0 20px 20px 0;
 }
 
-/* Functions title */
+/* Functions header */
+
+.functions-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
 
 .functions-panel__title {
-    margin: 0 0 14px;
+    margin: 0;
 
     font-size: 24px;
+    line-height: 1.5;
     font-weight: 700;
     color: var(--color-text);
+}
+
+.functions-panel__collapse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.functions-panel__collapse img {
+    display: block;
+    width: 24px;
+    height: 24px;
 }
 
 /* Function input */
@@ -228,7 +261,14 @@
     color: var(--color-text);
 }
 
-/* Grid toggle */
+/* Grid toggle & Reset */
+
+.graph-settings__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
 
 .graph-settings__grid-toggle {
     display: flex;
@@ -244,6 +284,34 @@
     margin: 0;
     accent-color: var(--color-accent);
     cursor: pointer;
+}
+
+.graph-settings__reset {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 8px;
+    background-color: transparent;
+    border: 1px solid var(--color-inputs-borders);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.graph-settings__reset:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.graph-settings__reset img {
+    display: block;
+    width: 14px;
+    height: 14px;
 }
 
 /* X and Y ranges */
@@ -343,7 +411,16 @@
     .functions-panel {
         width: 100%;
         min-height: auto;
+        max-height: none;
+        overflow-y: visible;
         padding: 20px;
+
+        border: 2px solid var(--color-inputs-borders);
+        border-radius: 20px;
+    }
+
+    .functions-panel__collapse {
+        display: none;
     }
 
     /* На вузьких екранах переводимо кнопку клавіатури в компактний рядок */

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Header from '../components/Header/Header';
 import Functions from '../components/Functions/Functions';
 import Graph from "../components/Graph/Graph";
@@ -5,8 +7,8 @@ import FunctionAnalysis from "../components/FunctionAnalysis/FunctionAnalysis";
 import Keypad from "../components/Keypad/Keypad";
 import Footer from '../components/Footer/Footer';
 
-import functionsIcon from '../assets/multi-picklist.svg';
-import analysisIcon from '../assets/magnifier-and-mark-help.svg';
+import hideToLeft from '../assets/hide-sidebar-toLeft.svg';
+import hideToRight from '../assets/hide-sidebar-toRight.svg';
 
 import { useFunctions } from '../hooks/useFunction';
 import { useKeypad } from '../hooks/useKeypad';
@@ -15,11 +17,21 @@ import style from './workpage.module.css';
 
 export default function Workpage() {
     const { functions, addFunction, toggleVisibility } = useFunctions();
-    const { keypadVisible, toggleKeypad } = useKeypad();
+    const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad();
+
+    const [functionsOpen, setFunctionsOpen] = useState(true);
+    const [analysisOpen, setAnalysisOpen] = useState(true);
+
+    function handleCollapseFunctions() {
+        setFunctionsOpen(false);
+        closeKeypad();
+    }
 
     return (
         <div className={style['workpage']}>
-            <Header />
+            <div className={style['workpage__header']}>
+                <Header />
+            </div>
 
             <main className={style['workpage__main']}>
                 {/* Вступний заголовок для мобільної та планшетної версії */}
@@ -30,39 +42,70 @@ export default function Workpage() {
                     </p>
                 </section>
 
-                <aside className={style['workpage__functions']}>
-                    <Functions functions={functions} addFunction={addFunction} toggleVisibility={toggleVisibility} keypadVisible={keypadVisible} toggleKeypad={toggleKeypad} />
-                </aside>
+                {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
+                <div className={style['workpage__workspace']}>
+                    <div className={style['workpage__graph']}>
+                        <Graph />
+                    </div>
 
-                <div className={style['workpage__graph']}>
+                    <aside
+                        className={`${style['workpage__functions']} ${
+                            !functionsOpen ? style['workpage__functions--hidden'] : ''
+                        }`}
+                    >
+                        <Functions
+                            functions={functions}
+                            addFunction={addFunction}
+                            toggleVisibility={toggleVisibility}
+                            keypadVisible={keypadVisible}
+                            toggleKeypad={toggleKeypad}
+                            onCollapse={handleCollapseFunctions}
+                        />
+                    </aside>
+
                     <button
                         type="button"
-                        className={`${style['workpage__panel-toggle']} ${style['workpage__panel-toggle--left']}`}
-                        aria-label="Open Functions"
+                        className={`${style['workpage__expand-btn']} ${style['workpage__expand-btn--left']} ${
+                            !functionsOpen ? style['workpage__expand-btn--visible'] : ''
+                        }`}
+                        onClick={() => setFunctionsOpen(true)}
+                        aria-label="Show functions panel"
                     >
-                        <img src={functionsIcon} alt="" />
+                        <img src={hideToRight} alt="" />
                     </button>
 
-                    <Graph />
+                    <aside
+                        className={`${style['workpage__analysis']} ${
+                            !analysisOpen ? style['workpage__analysis--hidden'] : ''
+                        }`}
+                    >
+                        <FunctionAnalysis
+                            functions={functions}
+                            onCollapse={() => setAnalysisOpen(false)}
+                        />
+                    </aside>
 
                     <button
                         type="button"
-                        className={`${style['workpage__panel-toggle']} ${style['workpage__panel-toggle--right']}`}
-                        aria-label="Open Analysis"
+                        className={`${style['workpage__expand-btn']} ${style['workpage__expand-btn--right']} ${
+                            !analysisOpen ? style['workpage__expand-btn--visible'] : ''
+                        }`}
+                        onClick={() => setAnalysisOpen(true)}
+                        aria-label="Show analysis panel"
                     >
-                        <img src={analysisIcon} alt="" />
+                        <img src={hideToLeft} alt="" />
                     </button>
-                </div>
 
-                <aside className={style['workpage__analysis']}>
-                    <FunctionAnalysis functions={functions} />
-                </aside>
-
-                {keypadVisible && (
-                    <div id="math-keypad-panel"  className={style['workpage__keypad']}>
+                    <div
+                        id="math-keypad-panel"
+                        className={`${style['workpage__keypad']} ${
+                            !keypadVisible ? style['workpage__keypad--hidden'] : ''
+                        }`}
+                        aria-hidden={!keypadVisible}
+                    >
                         <Keypad />
                     </div>
-                )}
+                </div>
             </main>
 
             <Footer />
