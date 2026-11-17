@@ -1,8 +1,7 @@
-import type { FunctionName } from "../constants/functionNames.ts";
+import type { FunctionName } from "../constants/mathFunctions.ts";
+import type { Operator } from './Operator.ts'
 
-export type Operator =
-    | '+' | '-' | '*' | '/' | '^'
-    | '=' | '<' | '>' | '<=' | '>='
+export type { Operator } from './Operator.ts'
 
 export type Token =
     | { type: 'number'; value: number; raw: string; position: number }

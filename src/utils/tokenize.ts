@@ -1,12 +1,6 @@
-import { functionNames } from '../constants/functionNames.ts'
-import type { FunctionName } from '../constants/functionNames.ts'
-import type { Operator, Token } from '../types/Token.ts'
-
-const functionNameSet = new Set<string>(functionNames)
-
-function isFunctionName(value: string): value is FunctionName {
-    return functionNameSet.has(value)
-}
+import { isFunctionName } from '../constants/mathFunctions.ts'
+import type { Operator } from '../types/Operator.ts'
+import type { Token } from '../types/Token.ts'
 
 export class TokenizeError extends Error {
     readonly position: number
@@ -40,7 +34,7 @@ const operators = new Map<string, Operator>([
     ['≥', '>='],
 ])
 
-export function tokenize(expression: string) {
+export function tokenize(expression: string): Token[] {
     const tokens: Token[] = []
     let position = 0
 

@@ -1,9 +1,5 @@
-export const functionNames = [
-    'sin', 'cos', 'tan', 'cot',
-    'asin', 'acos', 'atan', 'acot',
-    'arcsin', 'arccos', 'arctan', 'arccot',
-    'sinh', 'cosh', 'tanh', 'tgh', 'coth',
-    'sqrt', 'abs', 'ln', 'log', 'exp',
-] as const
+import { mathFunctions } from './mathFunctions.ts'
 
-export type FunctionName = typeof functionNames[number]
+export type { FunctionName } from './mathFunctions.ts'
+
+export const functionNames = Object.keys(mathFunctions) as Array<keyof typeof mathFunctions>

@@ -1,6 +1,7 @@
 import { tokenize } from './tokenize.ts'
-import type { Operator, Token } from '../types/Token.ts'
-import type { BinaryOperator, Expression } from '../types/Expression.ts'
+import type { Token } from '../types/Token.ts'
+import type { BinaryOperator, Operator } from '../types/Operator.ts'
+import type { Expression } from '../types/Expression.ts'
 
 export class ParseError extends Error {
     readonly position: number
