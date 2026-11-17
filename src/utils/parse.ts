@@ -42,7 +42,7 @@ export function parse(source: string): Expression {
 
     function expectRightParen(openingPosition: number): void {
         if (peek()?.type !== 'rightParen') {
-            fail(`Expected ")" to close "(" at position ${openingPosition}"!`)
+            fail(`Expected ")" to close "(" at position ${openingPosition}`)
         }
 
         index++
