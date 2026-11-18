@@ -11,6 +11,7 @@
     "test": "node src/tests/tokenize.test.ts && node src/tests/parse.test.ts && node src/tests/evaluate.test.ts && node src/tests/validateExpression.test.ts"
   },
   "dependencies": {
+    "jsxgraph": "^1.14.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4"
