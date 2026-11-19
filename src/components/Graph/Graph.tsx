@@ -1,16 +1,21 @@
+import { useFunctionPlots } from "../../hooks/useFunctionPlots"
+import { useEffect, useRef } from 'react'
+
 import plus from '../../assets/plus.svg'
 import minus from '../../assets/minus.svg'
 import fullscreen from '../../assets/expand-arrows.svg'
 import reset from '../../assets/reset.svg'
 import style from './Graph.module.css'
 
-import { useEffect, useRef } from 'react'
+import type { PlotFunction } from "../../types/PlotFunction"
+
 import JXG from 'jsxgraph'
 
-function createAxisConfig(
-    labelOffset: [number, number],
-    drawZero: boolean
-): JXG.AxisAttributes {
+type GraphProps = {
+    plots: readonly PlotFunction[]
+}
+
+function createAxisConfig(labelOffset: [number, number], drawZero: boolean): JXG.AxisAttributes {
     return {
         name: '', // можна написати 'x' / 'y', щоб показувалося на краю осі
         withLabel: true,
@@ -44,7 +49,7 @@ function createAxisConfig(
     }
 }
 
-export default function Graph() {
+export default function Graph({ plots }: GraphProps) {
     const boardRef = useRef<JXG.Board | null>(null)
     const boardId = 'functionlab-graph-board'
 
@@ -68,6 +73,8 @@ export default function Graph() {
             boardRef.current = null
         }
     }, [])
+
+    useFunctionPlots(boardRef, plots)
 
     return (
         <section className={style.graph} aria-label="Function graph">
