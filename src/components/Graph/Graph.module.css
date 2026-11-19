@@ -65,6 +65,9 @@
 
     border: none;
     border-radius: 0;
+
+    position: relative;
+    overflow: hidden;
 }
 
 /* Планшети та мобільні пристрої */
