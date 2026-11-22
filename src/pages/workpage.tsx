@@ -1,30 +1,39 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import Header from '../components/Header/Header';
-import Functions from '../components/Functions/Functions';
-import Graph from "../components/Graph/Graph";
-import FunctionAnalysis from "../components/FunctionAnalysis/FunctionAnalysis";
-import Keypad from "../components/Keypad/Keypad";
-import Footer from '../components/Footer/Footer';
+import Header from '../components/Header/Header'
+import Functions from '../components/Functions/Functions'
+import Graph from '../components/Graph/Graph'
+import FunctionAnalysis from '../components/FunctionAnalysis/FunctionAnalysis'
+import Keypad from '../components/Keypad/Keypad'
+import Footer from '../components/Footer/Footer'
 
-import hideToLeft from '../assets/hide-sidebar-toLeft.svg';
-import hideToRight from '../assets/hide-sidebar-toRight.svg';
+import hideToLeft from '../assets/hide-sidebar-toLeft.svg'
+import hideToRight from '../assets/hide-sidebar-toRight.svg'
 
-import { useFunctions } from '../hooks/useFunction';
-import { useKeypad } from '../hooks/useKeypad';
+import { useFunctions } from '../hooks/useFunction'
+import { useKeypad } from '../hooks/useKeypad'
 
-import style from './workpage.module.css';
+import style from './workpage.module.css'
+import type { PlotFunction } from "../types/PlotFunction.ts";
+
+// Temporary test functions (to delete)
+const demoPlots: readonly PlotFunction[] = [
+    { expression: 'x^2', color: 'cyan' },
+    { expression: 'sin(x)', color: 'orange' },
+    { expression: 'sqrt(x)', color: 'green' },
+    { expression: '1/x', color: 'red' },
+]
 
 export default function Workpage() {
-    const { functions, addFunction, toggleVisibility } = useFunctions();
-    const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad();
+    const { functions, addFunction, toggleVisibility } = useFunctions()
+    const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
 
-    const [functionsOpen, setFunctionsOpen] = useState(true);
-    const [analysisOpen, setAnalysisOpen] = useState(true);
+    const [functionsOpen, setFunctionsOpen] = useState(true)
+    const [analysisOpen, setAnalysisOpen] = useState(true)
 
     function handleCollapseFunctions() {
-        setFunctionsOpen(false);
-        closeKeypad();
+        setFunctionsOpen(false)
+        closeKeypad()
     }
 
     return (
@@ -45,7 +54,7 @@ export default function Workpage() {
                 {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
                 <div className={style['workpage__workspace']}>
                     <div className={style['workpage__graph']}>
-                        <Graph />
+                        <Graph plots={demoPlots}/>
                     </div>
 
                     <aside

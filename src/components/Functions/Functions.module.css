@@ -305,7 +305,6 @@
 
 .graph-settings__reset:hover {
     border-color: var(--color-accent);
-    color: var(--color-accent);
 }
 
 .graph-settings__reset img {
