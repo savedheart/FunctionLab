@@ -1,4 +1,4 @@
 export type PlotFunction = {
-    expression: string // Maybe change later on Expression type
+    expression: (x: number) => number
     color: string
 }

@@ -1,4 +1,6 @@
-export type FunctionColor = | 'green' | 'cyan' | 'purple' | 'red' | 'orange' | 'pink' | 'blue' | 'yellow' | 'teal' | 'magenta' | 'lime' | 'coral' | 'indigo' | 'gold' | 'violet'
+import type { FunctionColor } from '../constants/functionColors'
+
+export type { FunctionColor } from '../constants/functionColors'
 
 export type MathFunction = {
     id: number

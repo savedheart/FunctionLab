@@ -148,22 +148,6 @@
     border-radius: 50%;
 }
 
-.functions-list__color--green { background-color: #B6FF2E; }
-.functions-list__color--cyan { background-color: #39DCEB; }
-.functions-list__color--purple { background-color: #A970FF; }
-.functions-list__color--red { background-color: #FF5252; }
-.functions-list__color--orange { background-color: #FF9635; }
-.functions-list__color--pink { background-color: #FF69B4; }
-.functions-list__color--blue { background-color: #4D9FFF; }
-.functions-list__color--yellow { background-color: #FFE45C; }
-.functions-list__color--teal { background-color: #20C997; }
-.functions-list__color--magenta { background-color: #E754E8; }
-.functions-list__color--lime { background-color: #80FF72; }
-.functions-list__color--coral { background-color: #FF7F6E; }
-.functions-list__color--indigo { background-color: #7C83FF; }
-.functions-list__color--gold { background-color: #FFC247; }
-.functions-list__color--violet { background-color: #C084FC; }
-
 /* Visibility checkbox */
 
 .functions-list__visibility-button {
@@ -218,26 +202,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-/* Function options */
-
-.functions-list__options-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.functions-list__options-button img {
-    display: block;
-    width: 20px;
-    height: 20px;
 }
 
 /* Graph settings */

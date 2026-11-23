@@ -19,6 +19,8 @@ type FunctionAnalysisProps = {
 export default function FunctionAnalysis({ functions, onCollapse }: FunctionAnalysisProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null)
 
+    const selectedValue = functions.find(func => func.id === selectedId)?.id ?? ''
+
     return (
         <section className={style['function-analysis']}>
             <div className={style['function-analysis__header']}>
@@ -38,7 +40,7 @@ export default function FunctionAnalysis({ functions, onCollapse }: FunctionAnal
                 )}
             </div>
 
-            <select className={style['function-analysis__select']} aria-label="Select function to analyze" value={selectedId ?? ''} onChange={(event) => setSelectedId(Number(event.target.value))}>
+            <select className={style['function-analysis__select']} aria-label="Select function to analyze" value={selectedValue} onChange={(event) => setSelectedId(Number(event.target.value))}>
                 <option value="" disabled>
                     Select function
                 </option>

@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { functionColors } from '../constants/functionColors'
+import { evaluate } from '../utils/evaluate'
+import { validateExpression } from '../utils/validateExpression'
 
 import Header from '../components/Header/Header'
 import Functions from '../components/Functions/Functions'
@@ -16,20 +19,34 @@ import { useKeypad } from '../hooks/useKeypad'
 import style from './workpage.module.css'
 import type { PlotFunction } from "../types/PlotFunction.ts";
 
-// Temporary test functions (to delete)
-const demoPlots: readonly PlotFunction[] = [
-    { expression: 'x^2', color: 'cyan' },
-    { expression: 'sin(x)', color: 'orange' },
-    { expression: 'sqrt(x)', color: 'green' },
-    { expression: '1/x', color: 'red' },
-]
-
 export default function Workpage() {
-    const { functions, addFunction, toggleVisibility } = useFunctions()
+    const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
     const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
+
+    const plots = useMemo(() => {
+        const visiblePlots: PlotFunction[] = []
+
+        for (const func of functions) {
+            if (!func.visible) continue
+
+            const parsed = validateExpression(func.expression)
+            if (!parsed.valid) continue
+
+            const expression = parsed.expression
+
+            visiblePlots.push({
+                expression: x => Number.isFinite(x)
+                    ? evaluate(expression, { x }) ?? NaN
+                    : NaN,
+                color: functionColors[func.color],
+            })
+        }
+
+        return visiblePlots
+    }, [functions])
 
     function handleCollapseFunctions() {
         setFunctionsOpen(false)
@@ -54,7 +71,7 @@ export default function Workpage() {
                 {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
                 <div className={style['workpage__workspace']}>
                     <div className={style['workpage__graph']}>
-                        <Graph plots={demoPlots}/>
+                        <Graph plots={plots} />
                     </div>
 
                     <aside
@@ -65,6 +82,8 @@ export default function Workpage() {
                         <Functions
                             functions={functions}
                             addFunction={addFunction}
+                            changeFunctionColor={changeFunctionColor}
+                            removeFunction={removeFunction}
                             toggleVisibility={toggleVisibility}
                             keypadVisible={keypadVisible}
                             toggleKeypad={toggleKeypad}
