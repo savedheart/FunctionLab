@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode, type Ref } from 'react'
+import { useId, useState, type FormEvent, type ReactNode, type Ref } from 'react'
 
 import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
@@ -18,7 +18,8 @@ type FunctionsProps = {
     input: string,
     onInputChange: (value: string) => void,
     inputRef: Ref<HTMLInputElement>
-    addFunction: (expression: string) => void
+    inputError: string | null
+    onSubmitExpression: () => void
     changeFunctionColor: (id: number, color: FunctionColor) => void
     removeFunction: (id: number) => void
     toggleVisibility: (id: number, visible: boolean) => void
@@ -31,19 +32,17 @@ type FunctionsProps = {
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
+export default function Functions({ functions, input, onInputChange, inputRef, inputError, onSubmitExpression, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
     const [xMin, setXMin] = useState('')
     const [xMax, setXMax] = useState('')
     const [yMin, setYMin] = useState('')
     const [yMax, setYMax] = useState('')
 
+    const inputErrorId = useId()
+
     function handleAddFunction(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-
-        if (!input.trim()) return
-
-        addFunction(input)
-        onInputChange('')
+        onSubmitExpression()
     }
 
     function handleResetGraph() {
@@ -79,6 +78,8 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
                     className={style['functions-panel__input']}
                     type="text"
                     aria-label="Function expression"
+                    aria-invalid={inputError !== null}
+                    aria-describedby={inputError ? inputErrorId : undefined}
                     placeholder="Enter a function..."
                     value={input}
                     onChange={(event) => onInputChange(event.target.value)}
@@ -88,6 +89,12 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
                     Add +
                 </button>
             </form>
+
+            {inputError && (
+                <p id={inputErrorId} role="alert">
+                    {inputError}
+                </p>
+            )}
 
             {functions.length > 0 && (
                 <div className={style['functions-list']}>
