@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import type { FormEvent, Ref } from 'react'
 
 import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
@@ -15,6 +15,9 @@ import style from './Functions.module.css'
 
 type FunctionsProps = {
     functions: MathFunction[]
+    input: string,
+    onInputChange: (value: string) => void,
+    inputRef: Ref<HTMLInputElement>
     addFunction: (expression: string) => void
     changeFunctionColor: (id: number, color: FunctionColor) => void
     removeFunction: (id: number) => void
@@ -24,16 +27,14 @@ type FunctionsProps = {
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, addFunction, changeFunctionColor, removeFunction,toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
-    const [input, setInput] = useState('')
-
-    function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
+export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction,toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
+    function handleAddFunction(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
         if (!input.trim()) return
 
         addFunction(input)
-        setInput('')
+        onInputChange('')
     }
 
     return (
@@ -57,12 +58,13 @@ export default function Functions({ functions, addFunction, changeFunctionColor,
 
             <form className={style['functions-panel__form']} onSubmit={handleAddFunction}>
                 <input
+                    ref={inputRef}
                     className={style['functions-panel__input']}
                     type="text"
                     aria-label="Function expression"
                     placeholder="Enter a function..."
                     value={input}
-                    onChange={(event) => setInput(event.target.value)}
+                    onChange={(event) => onInputChange(event.target.value)}
                 />
 
                 <button className={style['functions-panel__add-button']} type="submit">
