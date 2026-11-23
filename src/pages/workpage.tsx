@@ -15,6 +15,7 @@ import hideToRight from '../assets/hide-sidebar-toRight.svg'
 
 import { useFunctions } from '../hooks/useFunction'
 import { useKeypad } from '../hooks/useKeypad'
+import { useExpressionInput } from "../hooks/useExpressionInput"
 
 import style from './workpage.module.css'
 import type { PlotFunction } from "../types/PlotFunction.ts";
@@ -22,6 +23,7 @@ import type { PlotFunction } from "../types/PlotFunction.ts";
 export default function Workpage() {
     const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
     const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
+    const expressionInput = useExpressionInput()
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
@@ -81,6 +83,9 @@ export default function Workpage() {
                     >
                         <Functions
                             functions={functions}
+                            input={expressionInput.value}
+                            onInputChange={expressionInput.setValue}
+                            inputRef={expressionInput.inputRef}
                             addFunction={addFunction}
                             changeFunctionColor={changeFunctionColor}
                             removeFunction={removeFunction}
@@ -130,8 +135,10 @@ export default function Workpage() {
                             !keypadVisible ? style['workpage__keypad--hidden'] : ''
                         }`}
                         aria-hidden={!keypadVisible}
+                        inert={!keypadVisible}
                     >
-                        <Keypad />
+
+                        <Keypad onEdit={expressionInput.applyEdit} onEnter={expressionInput.submit} />
                     </div>
                 </div>
             </main>
