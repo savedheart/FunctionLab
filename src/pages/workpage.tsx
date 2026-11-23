@@ -1,30 +1,56 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react'
+import { functionColors } from '../constants/functionColors'
+import { evaluate } from '../utils/evaluate'
+import { validateExpression } from '../utils/validateExpression'
 
-import Header from '../components/Header/Header';
-import Functions from '../components/Functions/Functions';
-import Graph from "../components/Graph/Graph";
-import FunctionAnalysis from "../components/FunctionAnalysis/FunctionAnalysis";
-import Keypad from "../components/Keypad/Keypad";
-import Footer from '../components/Footer/Footer';
+import Header from '../components/Header/Header'
+import Functions from '../components/Functions/Functions'
+import Graph from '../components/Graph/Graph'
+import FunctionAnalysis from '../components/FunctionAnalysis/FunctionAnalysis'
+import Keypad from '../components/Keypad/Keypad'
+import Footer from '../components/Footer/Footer'
 
-import hideToLeft from '../assets/hide-sidebar-toLeft.svg';
-import hideToRight from '../assets/hide-sidebar-toRight.svg';
+import hideToLeft from '../assets/hide-sidebar-toLeft.svg'
+import hideToRight from '../assets/hide-sidebar-toRight.svg'
 
-import { useFunctions } from '../hooks/useFunction';
-import { useKeypad } from '../hooks/useKeypad';
+import { useFunctions } from '../hooks/useFunction'
+import { useKeypad } from '../hooks/useKeypad'
 
-import style from './workpage.module.css';
+import style from './workpage.module.css'
+import type { PlotFunction } from "../types/PlotFunction.ts";
 
 export default function Workpage() {
-    const { functions, addFunction, toggleVisibility } = useFunctions();
-    const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad();
+    const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
+    const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
 
-    const [functionsOpen, setFunctionsOpen] = useState(true);
-    const [analysisOpen, setAnalysisOpen] = useState(true);
+    const [functionsOpen, setFunctionsOpen] = useState(true)
+    const [analysisOpen, setAnalysisOpen] = useState(true)
+
+    const plots = useMemo(() => {
+        const visiblePlots: PlotFunction[] = []
+
+        for (const func of functions) {
+            if (!func.visible) continue
+
+            const parsed = validateExpression(func.expression)
+            if (!parsed.valid) continue
+
+            const expression = parsed.expression
+
+            visiblePlots.push({
+                expression: x => Number.isFinite(x)
+                    ? evaluate(expression, { x }) ?? NaN
+                    : NaN,
+                color: functionColors[func.color],
+            })
+        }
+
+        return visiblePlots
+    }, [functions])
 
     function handleCollapseFunctions() {
-        setFunctionsOpen(false);
-        closeKeypad();
+        setFunctionsOpen(false)
+        closeKeypad()
     }
 
     return (
@@ -45,7 +71,7 @@ export default function Workpage() {
                 {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
                 <div className={style['workpage__workspace']}>
                     <div className={style['workpage__graph']}>
-                        <Graph />
+                        <Graph plots={plots} />
                     </div>
 
                     <aside
@@ -56,6 +82,8 @@ export default function Workpage() {
                         <Functions
                             functions={functions}
                             addFunction={addFunction}
+                            changeFunctionColor={changeFunctionColor}
+                            removeFunction={removeFunction}
                             toggleVisibility={toggleVisibility}
                             keypadVisible={keypadVisible}
                             toggleKeypad={toggleKeypad}

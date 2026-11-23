@@ -1,0 +1,82 @@
+.trigger {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.trigger img {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.panel {
+    box-sizing: border-box;
+    width: 184px;
+    max-width: calc(100vw - 24px);
+    padding: 12px;
+    background: var(--color-bar);
+    color: var(--color-text);
+    border: 2px solid var(--color-inputs-borders);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 35%);
+}
+
+@supports (position-area: bottom span-left) {
+    .panel {
+        inset: auto;
+        margin: 6px 0;
+        position-area: bottom span-left;
+        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+        justify-self: end;
+    }
+}
+
+.label {
+    margin: 0 0 8px;
+    font-weight: 700;
+}
+
+.palette {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.swatch[aria-pressed='true'] {
+    border-color: var(--color-bg);
+    box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.panel button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.remove {
+    width: 100%;
+    margin-top: 12px;
+    padding: 6px 8px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-inputs-borders);
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+}

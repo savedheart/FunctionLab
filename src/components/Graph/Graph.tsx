@@ -1,11 +1,19 @@
+import { useFunctionPlots } from "../../hooks/useFunctionPlots"
+import { useEffect, useRef, useState } from 'react'
+
 import plus from '../../assets/plus.svg'
 import minus from '../../assets/minus.svg'
 import fullscreen from '../../assets/expand-arrows.svg'
 import reset from '../../assets/reset.svg'
 import style from './Graph.module.css'
 
-import { useEffect, useRef, useState } from 'react'
+import type { PlotFunction } from "../../types/PlotFunction"
+
 import JXG from 'jsxgraph'
+
+type GraphProps = {
+    plots: readonly PlotFunction[]
+}
 
 function getNiceStep(pixelsPerUnit: number, targetPixels = 90): number {
     const rawStep = targetPixels / pixelsPerUnit
@@ -55,7 +63,7 @@ function createAxisConfig(
     }
 }
 
-export default function Graph() {
+export default function Graph({ plots }: GraphProps) {
     const boardRef = useRef<JXG.Board | null>(null)
     const boardId = 'functionlab-graph-board'
 
@@ -107,6 +115,8 @@ export default function Graph() {
             boardRef.current = null
         }
     }, [])
+
+    useFunctionPlots(boardRef, plots)
 
     const [isFullscreen, setIsFullscreen] = useState(false)
 

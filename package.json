@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node src/tests/tokenize.test.ts && node src/tests/parse.test.ts && node src/tests/evaluate.test.ts && node src/tests/validateExpression.test.ts"
+    "test": "node src/tests/tokenize.test.ts && node src/tests/parse.test.ts && node src/tests/evaluate.test.ts && node src/tests/validateExpression.test.ts && node src/tests/analyzeFunction.test.ts"
   },
   "dependencies": {
     "jsxgraph": "^1.14.3",

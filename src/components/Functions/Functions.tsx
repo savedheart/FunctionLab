@@ -1,27 +1,30 @@
 import { useState } from 'react'
 
-import type {MathFunction} from "../../types/MathFunction.ts"
-
 import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
-import dotsVertical from '../../assets/dots-vertical.svg'
 import keyboardShow from '../../assets/keyboard-show.svg'
 import keyboardHide from '../../assets/keyboard-hide.svg'
 import hideToLeft from '../../assets/hide-sidebar-toLeft.svg'
 import resetIcon from '../../assets/reset.svg'
+
+import type { FunctionColor, MathFunction } from '../../types/MathFunction'
+import { functionColors } from '../../constants/functionColors'
+import FunctionOptions from '../FunctionOptions/FunctionOptions'
 
 import style from './Functions.module.css'
 
 type FunctionsProps = {
     functions: MathFunction[]
     addFunction: (expression: string) => void
+    changeFunctionColor: (id: number, color: FunctionColor) => void
+    removeFunction: (id: number) => void
     toggleVisibility: (id: number, visible: boolean) => void
     keypadVisible: boolean
     toggleKeypad: () => void
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, addFunction, toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
+export default function Functions({ functions, addFunction, changeFunctionColor, removeFunction,toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
     const [input, setInput] = useState('')
 
     function handleAddFunction(event: React.FormEvent<HTMLFormElement>) {
@@ -72,7 +75,11 @@ export default function Functions({ functions, addFunction, toggleVisibility, ke
                     <ul className={style['functions-list__items']}>
                         {functions.map((func: MathFunction) => (
                             <li className={style['functions-list__item']} key={func.id}>
-                                <span className={`${style['functions-list__color']} ${style[`functions-list__color--${func.color}`]}`} />
+                                <span
+                                    className={style['functions-list__color']}
+                                    style={{ backgroundColor: functionColors[func.color] }}
+                                    aria-hidden="true"
+                                />
 
                                 <label className={style['functions-list__visibility-button']}>
                                     <input
@@ -89,13 +96,7 @@ export default function Functions({ functions, addFunction, toggleVisibility, ke
                                     {func.expression}
                                 </span>
 
-                                <button
-                                    className={style['functions-list__options-button']}
-                                    type="button"
-                                    aria-label={`Options for function ${func.id}`}
-                                >
-                                    <img src={dotsVertical} alt="" />
-                                </button>
+                                <FunctionOptions func={func} onChangeColor={changeFunctionColor} onRemove={removeFunction} />
                             </li>
                         ))}
                     </ul>
