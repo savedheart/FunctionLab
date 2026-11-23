@@ -75,6 +75,11 @@
 
     position: relative;
     overflow: hidden;
+    cursor: grab;
+}
+
+.graph__viewport:active {
+    cursor: grabbing;
 }
 
 /* Планшети та мобільні пристрої */
