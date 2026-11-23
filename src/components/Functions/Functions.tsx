@@ -1,4 +1,4 @@
-import type { FormEvent, Ref } from 'react'
+import { useState, type FormEvent, type ReactNode, type Ref } from 'react'
 
 import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
@@ -22,12 +22,21 @@ type FunctionsProps = {
     changeFunctionColor: (id: number, color: FunctionColor) => void
     removeFunction: (id: number) => void
     toggleVisibility: (id: number, visible: boolean) => void
+    showGrid: boolean
+    onToggleGrid: (visible: boolean) => void
+    onResetGraph: () => void
     keypadVisible: boolean
     toggleKeypad: () => void
+    inlineKeypad?: ReactNode
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction,toggleVisibility, keypadVisible, toggleKeypad, onCollapse }: FunctionsProps) {
+export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
+    const [xMin, setXMin] = useState('')
+    const [xMax, setXMax] = useState('')
+    const [yMin, setYMin] = useState('')
+    const [yMax, setYMax] = useState('')
+
     function handleAddFunction(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
@@ -35,6 +44,14 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
 
         addFunction(input)
         onInputChange('')
+    }
+
+    function handleResetGraph() {
+        setXMin('')
+        setXMax('')
+        setYMin('')
+        setYMax('')
+        onResetGraph()
     }
 
     return (
@@ -110,7 +127,11 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
 
                 <div className={style['graph-settings__actions']}>
                     <label className={style['graph-settings__grid-toggle']}>
-                        <input type="checkbox" defaultChecked />
+                        <input
+                            type="checkbox"
+                            checked={showGrid}
+                            onChange={(event) => onToggleGrid(event.target.checked)}
+                        />
                         <span>Show grid</span>
                     </label>
 
@@ -118,6 +139,7 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
                         type="button"
                         className={style['graph-settings__reset']}
                         aria-label="Reset graph view"
+                        onClick={handleResetGraph}
                     >
                         <img src={resetIcon} alt="" />
                         <span>Reset</span>
@@ -126,34 +148,62 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
 
                 <div className={style['graph-settings__range']}>
                     <span>X range</span>
-                    <input type="text" aria-label="Minimum X" />
+                    <input
+                        type="text"
+                        aria-label="Minimum X"
+                        value={xMin}
+                        onChange={(event) => setXMin(event.target.value)}
+                    />
                     <span>to</span>
-                    <input type="text" aria-label="Maximum X" />
+                    <input
+                        type="text"
+                        aria-label="Maximum X"
+                        value={xMax}
+                        onChange={(event) => setXMax(event.target.value)}
+                    />
                 </div>
 
                 <div className={style['graph-settings__range']}>
                     <span>Y range</span>
-                    <input type="text" aria-label="Minimum Y" />
+                    <input
+                        type="text"
+                        aria-label="Minimum Y"
+                        value={yMin}
+                        onChange={(event) => setYMin(event.target.value)}
+                    />
                     <span>to</span>
-                    <input type="text" aria-label="Maximum Y" />
+                    <input
+                        type="text"
+                        aria-label="Maximum Y"
+                        value={yMax}
+                        onChange={(event) => setYMax(event.target.value)}
+                    />
                 </div>
             </section>
 
             <section className={style['math-keypad']} aria-labelledby="keypad-title">
-                <h3 id="keypad-title" className={style['math-keypad__title']}>
-                    Math keypad
-                </h3>
+                <div className={style['math-keypad__header']}>
+                    <h3 id="keypad-title" className={style['math-keypad__title']}>
+                        Math keypad
+                    </h3>
 
-                <button
-                    className={style['math-keypad__toggle']}
-                    type="button"
-                    aria-label={keypadVisible ? 'Hide math keypad' : 'Show math keypad'}
-                    aria-expanded={keypadVisible}
-                    aria-controls="math-keypad-panel"
-                    onClick={toggleKeypad}
-                >
-                    <img src={keypadVisible ? keyboardHide : keyboardShow} alt="" />
-                </button>
+                    <button
+                        className={style['math-keypad__toggle']}
+                        type="button"
+                        aria-label={keypadVisible ? 'Hide math keypad' : 'Show math keypad'}
+                        aria-expanded={keypadVisible}
+                        aria-controls="math-keypad-panel"
+                        onClick={toggleKeypad}
+                    >
+                        <img src={keypadVisible ? keyboardHide : keyboardShow} alt="" />
+                    </button>
+                </div>
+
+                {keypadVisible && inlineKeypad && (
+                    <div className={style['math-keypad__inline']}>
+                        {inlineKeypad}
+                    </div>
+                )}
             </section>
         </section>
     )

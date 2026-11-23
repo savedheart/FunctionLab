@@ -27,6 +27,8 @@ export default function Workpage() {
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
+    const [showGrid, setShowGrid] = useState(true)
+    const [resetSignal, setResetSignal] = useState(0)
 
     const plots = useMemo(() => {
         const visiblePlots: PlotFunction[] = []
@@ -55,6 +57,11 @@ export default function Workpage() {
         closeKeypad()
     }
 
+    function handleResetGraph() {
+        setShowGrid(true)
+        setResetSignal((prev) => prev + 1)
+    }
+
     return (
         <div className={style['workpage']}>
             <div className={style['workpage__header']}>
@@ -73,7 +80,7 @@ export default function Workpage() {
                 {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
                 <div className={style['workpage__workspace']}>
                     <div className={style['workpage__graph']}>
-                        <Graph plots={plots} />
+                        <Graph plots={plots} showGrid={showGrid} resetSignal={resetSignal} />
                     </div>
 
                     <aside
@@ -90,8 +97,14 @@ export default function Workpage() {
                             changeFunctionColor={changeFunctionColor}
                             removeFunction={removeFunction}
                             toggleVisibility={toggleVisibility}
+                            showGrid={showGrid}
+                            onToggleGrid={setShowGrid}
+                            onResetGraph={handleResetGraph}
                             keypadVisible={keypadVisible}
                             toggleKeypad={toggleKeypad}
+                            inlineKeypad={
+                                <Keypad onEdit={expressionInput.applyEdit} onEnter={expressionInput.submit} />
+                            }
                             onCollapse={handleCollapseFunctions}
                         />
                     </aside>

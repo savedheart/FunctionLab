@@ -69,6 +69,7 @@
             "b4  b5  b6  mul  .  x    y    ent  ent"
             "b1  b2  b3  sub  .  pow  abs  lt   gt"
             "b0  dot eq  add  .  sqrt pi   lte  gte";
+        box-shadow: none;
     }
 
     .keypad-panel__button {

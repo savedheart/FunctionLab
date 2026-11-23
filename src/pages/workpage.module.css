@@ -264,17 +264,8 @@
         order: 2;
     }
 
+    /* На планшетах і мобілці клавіатура рендериться всередині блока Functions перед Graph Settings */
     .workpage__keypad {
-        position: static;
-        transform: none;
-        width: 100%;
-        order: 3;
-        padding: 0;
-        opacity: 1;
-        transition: none;
-    }
-
-    .workpage__keypad--hidden {
         display: none;
     }
 

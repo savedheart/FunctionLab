@@ -4,15 +4,25 @@ import { useEffect, useRef, useState } from 'react'
 import plus from '../../assets/plus.svg'
 import minus from '../../assets/minus.svg'
 import fullscreen from '../../assets/expand-arrows.svg'
-import reset from '../../assets/reset.svg'
 import style from './Graph.module.css'
 
 import type { PlotFunction } from "../../types/PlotFunction"
 
 import JXG from 'jsxgraph'
 
+const DEFAULT_BOUNDING_BOX: [number, number, number, number] = [-10, 10, 10, -10]
+
 type GraphProps = {
     plots: readonly PlotFunction[]
+    showGrid: boolean
+    resetSignal: number
+}
+
+function getGridTickAttributes(showGrid: boolean): Pick<JXG.TicksOptions, 'majorHeight' | 'minorHeight'> {
+    // Negative height stretches ticks across the whole board as grid lines; positive keeps short axis ticks only.
+    return showGrid
+        ? { majorHeight: -1, minorHeight: -1 }
+        : { majorHeight: 8, minorHeight: 0 }
 }
 
 function getNiceStep(pixelsPerUnit: number, targetPixels = 90): number {
@@ -27,7 +37,8 @@ function getNiceStep(pixelsPerUnit: number, targetPixels = 90): number {
 
 function createAxisConfig(
     labelOffset: [number, number],
-    drawZero: boolean
+    drawZero: boolean,
+    showGrid: boolean
 ): JXG.AxisAttributes {
     return {
         name: '', // можна написати 'x' / 'y', щоб показувалося на краю осі
@@ -47,8 +58,7 @@ function createAxisConfig(
             insertTicks: false,
             ticksDistance: 2,     // автопідбір кроку чисел
             minorTicks: 3,         // 4 дрібні підсітки між числами
-            majorHeight: -1,       // головні лінії сітки на весь екран
-            minorHeight: -1,       // дрібні лінії сітки (або 0, якщо не потрібні)
+            ...getGridTickAttributes(showGrid),
             strokeColor: '#353A45',
             strokeOpacity: 0.65,
             drawLabels: true,
@@ -63,25 +73,30 @@ function createAxisConfig(
     }
 }
 
-export default function Graph({ plots }: GraphProps) {
+export default function Graph({ plots, showGrid, resetSignal }: GraphProps) {
     const boardRef = useRef<JXG.Board | null>(null)
+    const axesRef = useRef<{ x: JXG.Axis; y: JXG.Axis } | null>(null)
+    const initialShowGridRef = useRef(showGrid)
     const boardId = 'functionlab-graph-board'
 
     useEffect(() => {
         const board = JXG.JSXGraph.initBoard(boardId, {
-            boundingbox: [-10, 10, 10, -10], // [left, top, right, bottom]
+            boundingbox: DEFAULT_BOUNDING_BOX, // [left, top, right, bottom]
             axis: false,
             showCopyright: false,
             showNavigation: false,
             keepAspectRatio: true,
+            pan: { enabled: true, needShift: false, needTwoFingers: false },
+            zoom: { wheel: true, needShift: false, factorX: 1.15, factorY: 1.15 },
             resize: { enabled: false, throttle: 10 },
             maxFrameRate: 240,
         })
 
         boardRef.current = board
 
-        const xAxis = board.create('axis', [[0, 0], [1, 0]], createAxisConfig([-14, 14], true))
-        const yAxis = board.create('axis', [[0, 0], [0, 1]], createAxisConfig([12, -14], false))
+        const xAxis = board.create('axis', [[0, 0], [1, 0]], createAxisConfig([-14, 14], true, initialShowGridRef.current))
+        const yAxis = board.create('axis', [[0, 0], [0, 1]], createAxisConfig([12, -14], false, initialShowGridRef.current))
+        axesRef.current = { x: xAxis, y: yAxis }
 
         let currentStep = 0
 
@@ -94,7 +109,13 @@ export default function Graph({ plots }: GraphProps) {
             currentStep = nextStep
             xAxis.defaultTicks.setAttribute({ ticksDistance: nextStep })
             yAxis.defaultTicks.setAttribute({ ticksDistance: nextStep })
-            board.update()
+
+            // Defer fullUpdate past JSXGraph's inUpdate guard so ticks redraw immediately on Reset and single zoom steps.
+            queueMicrotask(() => {
+                if (boardRef.current === board) {
+                    board.fullUpdate()
+                }
+            })
         }
 
         syncGridStep()
@@ -113,8 +134,29 @@ export default function Graph({ plots }: GraphProps) {
             observer.disconnect()
             JXG.JSXGraph.freeBoard(board)
             boardRef.current = null
+            axesRef.current = null
         }
     }, [])
+
+    useEffect(() => {
+        const board = boardRef.current
+        const axes = axesRef.current
+        if (!board || !axes) return
+
+        const gridAttributes = getGridTickAttributes(showGrid)
+        axes.x.defaultTicks.setAttribute(gridAttributes)
+        axes.y.defaultTicks.setAttribute(gridAttributes)
+        board.update()
+    }, [showGrid])
+
+    useEffect(() => {
+        if (resetSignal === 0) return
+        const board = boardRef.current
+        if (!board) return
+
+        board.setBoundingBox(DEFAULT_BOUNDING_BOX, true, 'reset')
+        board.fullUpdate()
+    }, [resetSignal])
 
     useFunctionPlots(boardRef, plots)
 
@@ -192,10 +234,6 @@ export default function Graph({ plots }: GraphProps) {
                         onClick={handleToggleFullscreen}
                     >
                         <img src={fullscreen} alt="" />
-                    </button>
-
-                    <button type="button" className={style.graph__button} aria-label="Reset view">
-                        <img src={reset} alt="" />
                     </button>
                 </div>
             </div>

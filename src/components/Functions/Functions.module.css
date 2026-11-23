@@ -327,6 +327,19 @@
     border-top: 1px solid var(--color-inputs-borders);
 }
 
+.math-keypad__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.math-keypad__inline {
+    display: none;
+    width: 100%;
+}
+
 .math-keypad__title {
     margin: 0;
 
@@ -386,11 +399,30 @@
         display: none;
     }
 
-    /* На вузьких екранах переводимо кнопку клавіатури в компактний рядок */
+    /* На вузьких екранах переносимо клавіатуру перед Graph Settings, щоб інпут і кнопки були в одному кадрі */
     .math-keypad {
+        order: 1;
+        align-items: stretch;
+        gap: 10px;
+
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+
+    .math-keypad__header {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .math-keypad__inline {
+        display: block;
+    }
+
+    .graph-settings {
+        order: 2;
+        margin-top: 14px;
+        padding-top: 14px;
     }
 
     .math-keypad__title {
