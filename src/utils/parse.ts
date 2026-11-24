@@ -29,7 +29,10 @@ function isBinaryOperator(value: Operator): value is BinaryOperator {
 }
 
 export function parse(source: string): Expression {
-    const tokens = tokenize(source)
+    return parseTokens(tokenize(source), source.length)
+}
+
+export function parseTokens(tokens: readonly Token[], sourceLength: number): Expression {
     let index = 0
 
     function peek(): Token | undefined {
@@ -37,7 +40,7 @@ export function parse(source: string): Expression {
     }
 
     function fail(message: string, token = peek()): never {
-        throw new ParseError(message, token?.position ?? source.length)
+        throw new ParseError(message, token?.position ?? sourceLength)
     }
 
     function expectRightParen(openingPosition: number): void {

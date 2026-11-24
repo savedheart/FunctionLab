@@ -7,8 +7,10 @@ import calculator from '../../assets/calculator_1.svg'
 import hideToRight from '../../assets/hide-sidebar-toRight.svg'
 
 import { useMemo, useState } from 'react'
+
 import type { MathFunction } from '../../types/MathFunction'
 import { analyzeFunction } from '../../utils/analyzeFunction'
+import { formatValueAtX } from "../../utils/formatValueAtX"
 
 import style from './FunctionAnalysis.module.css'
 
@@ -293,7 +295,7 @@ export default function FunctionAnalysis({
             valueAtXText = 'Invalid x'
         } else {
             const evaluated = analysis.valueAt(parsedX)
-            valueAtXText = evaluated === null ? 'Undefined' : formatNumber(evaluated)
+            valueAtXText = evaluated === null ? 'Undefined' : formatValueAtX(evaluated)
         }
     }
 
