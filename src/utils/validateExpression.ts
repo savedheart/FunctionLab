@@ -1,6 +1,7 @@
-import { mathConstants } from '../constants/mathConstants.ts'
-import type { Expression } from '../types/Expression.ts'
-import { parse, ParseError } from './parse.ts'
+import { mathConstants } from '../constants/mathConstants'
+import type { Expression } from '../types/Expression'
+import type { Token } from '../types/Token'
+import { parseTokens, ParseError } from './parse.ts'
 import { tokenize, TokenizeError } from './tokenize.ts'
 
 export type ValidationFailure = {
@@ -19,18 +20,37 @@ export type ValidationResult =
 
 const defaultAllowedVariables: ReadonlySet<string> = new Set(['x'])
 
-/**
- * Validates raw expression text without throwing.
- * Reports lexical, syntax, and unknown-identifier errors with their source position and highlight length.
- */
 export function validateExpression(
     source: string,
     allowedVariables: ReadonlySet<string> = defaultAllowedVariables
 ): ValidationResult {
     let expression: Expression
+    let tokens: readonly Token[]
 
     try {
-        expression = parse(source)
+        tokens = tokenize(source)
+        const [name, second, parameter, closing, equals] = tokens
+
+        if (
+            name?.type === 'identifier' &&
+            second?.type === 'leftParen' &&
+            parameter?.type === 'identifier' &&
+            parameter.value === 'x' &&
+            closing?.type === 'rightParen' &&
+            equals?.type === 'operator' &&
+            equals.value === '='
+        ) {
+            tokens = tokens.slice(5)
+        } else if (
+            name?.type === 'identifier' &&
+            name.value === 'y' &&
+            second?.type === 'operator' &&
+            second.value === '='
+        ) {
+            tokens = tokens.slice(2)
+        }
+
+        expression = parseTokens(tokens, source.length)
     } catch (error) {
         if (error instanceof TokenizeError || error instanceof ParseError) {
             return {
@@ -43,8 +63,6 @@ export function validateExpression(
 
         throw error
     }
-
-    const tokens = tokenize(source)
 
     for (const token of tokens) {
         if (
