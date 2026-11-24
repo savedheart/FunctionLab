@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode, type Ref } from 'react'
+import type { FormEvent, ReactNode, Ref } from 'react'
 
 import eyeShow from '../../assets/eye-show.svg'
 import eyeHide from '../../assets/eye-hide.svg'
@@ -8,10 +8,16 @@ import hideToLeft from '../../assets/hide-sidebar-toLeft.svg'
 import resetIcon from '../../assets/reset.svg'
 
 import type { FunctionColor, MathFunction } from '../../types/MathFunction'
+import type { GraphRanges } from '../../pages/workpage'
 import { functionColors } from '../../constants/functionColors'
+import { validateExpression } from '../../utils/validateExpression'
 import FunctionOptions from '../FunctionOptions/FunctionOptions'
 
 import style from './Functions.module.css'
+
+function formatValidationError(error: string): string {
+    return error.replace(/at position (\d+)/g, (_, pos) => `at position ${Number(pos) + 1}`)
+}
 
 type FunctionsProps = {
     functions: MathFunction[]
@@ -24,6 +30,10 @@ type FunctionsProps = {
     toggleVisibility: (id: number, visible: boolean) => void
     showGrid: boolean
     onToggleGrid: (visible: boolean) => void
+    ranges: GraphRanges
+    xRangeError?: string
+    yRangeError?: string
+    onRangeChange: (field: keyof GraphRanges, value: string) => void
     onResetGraph: () => void
     keypadVisible: boolean
     toggleKeypad: () => void
@@ -31,27 +41,19 @@ type FunctionsProps = {
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
-    const [xMin, setXMin] = useState('')
-    const [xMax, setXMax] = useState('')
-    const [yMin, setYMin] = useState('')
-    const [yMax, setYMax] = useState('')
+export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, ranges, xRangeError, yRangeError, onRangeChange, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
+    const hasInput = input.trim().length > 0
+    const validation = hasInput ? validateExpression(input) : null
+    const validationError = validation && !validation.valid ? validation : null
+    const isAddDisabled = !hasInput || Boolean(validationError)
 
     function handleAddFunction(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
-        if (!input.trim()) return
+        if (isAddDisabled) return
 
         addFunction(input)
         onInputChange('')
-    }
-
-    function handleResetGraph() {
-        setXMin('')
-        setXMax('')
-        setYMin('')
-        setYMax('')
-        onResetGraph()
     }
 
     return (
@@ -79,14 +81,38 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
                     className={style['functions-panel__input']}
                     type="text"
                     aria-label="Function expression"
+                    aria-invalid={Boolean(validationError)}
                     placeholder="Enter a function..."
                     value={input}
                     onChange={(event) => onInputChange(event.target.value)}
                 />
 
-                <button className={style['functions-panel__add-button']} type="submit">
-                    Add +
-                </button>
+                <span
+                    className={
+                        isAddDisabled
+                            ? `${style['functions-panel__add-wrapper']} ${style['functions-panel__add-wrapper--disabled']}`
+                            : style['functions-panel__add-wrapper']
+                    }
+                >
+                    <button
+                        className={style['functions-panel__add-button']}
+                        type="submit"
+                        disabled={isAddDisabled}
+                        aria-describedby={validationError ? 'function-add-error-tooltip' : undefined}
+                    >
+                        Add +
+                    </button>
+
+                    {validationError && (
+                        <span
+                            id="function-add-error-tooltip"
+                            className={style['functions-panel__tooltip']}
+                            role="tooltip"
+                        >
+                            {formatValidationError(validationError.error)}
+                        </span>
+                    )}
+                </span>
             </form>
 
             {functions.length > 0 && (
@@ -139,45 +165,91 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
                         type="button"
                         className={style['graph-settings__reset']}
                         aria-label="Reset graph view"
-                        onClick={handleResetGraph}
+                        onClick={onResetGraph}
                     >
                         <img src={resetIcon} alt="" />
                         <span>Reset</span>
                     </button>
                 </div>
 
-                <div className={style['graph-settings__range']}>
-                    <span>X range</span>
-                    <input
-                        type="text"
-                        aria-label="Minimum X"
-                        value={xMin}
-                        onChange={(event) => setXMin(event.target.value)}
-                    />
-                    <span>to</span>
-                    <input
-                        type="text"
-                        aria-label="Maximum X"
-                        value={xMax}
-                        onChange={(event) => setXMax(event.target.value)}
-                    />
+                <div className={style['graph-settings__range-group']}>
+                    <div className={style['graph-settings__range']}>
+                        <span>X range</span>
+                        <input
+                            type="text"
+                            inputMode="decimal"
+                            aria-label="Minimum X"
+                            aria-invalid={Boolean(xRangeError)}
+                            className={
+                                xRangeError
+                                    ? style['graph-settings__range-input--error']
+                                    : (!ranges.xMin.trim() && ranges.xMax.trim()
+                                        ? style['graph-settings__range-input--implied']
+                                        : undefined)
+                            }
+                            placeholder="−∞"
+                            value={ranges.xMin}
+                            onChange={(event) => onRangeChange('xMin', event.target.value)}
+                        />
+                        <span>to</span>
+                        <input
+                            type="text"
+                            inputMode="decimal"
+                            aria-label="Maximum X"
+                            aria-invalid={Boolean(xRangeError)}
+                            className={
+                                xRangeError
+                                    ? style['graph-settings__range-input--error']
+                                    : (ranges.xMin.trim() && !ranges.xMax.trim()
+                                        ? style['graph-settings__range-input--implied']
+                                        : undefined)
+                            }
+                            placeholder="+∞"
+                            value={ranges.xMax}
+                            onChange={(event) => onRangeChange('xMax', event.target.value)}
+                        />
+                    </div>
+                    {xRangeError && <p className={style['graph-settings__range-error']} role="alert">{xRangeError}</p>}
                 </div>
 
-                <div className={style['graph-settings__range']}>
-                    <span>Y range</span>
-                    <input
-                        type="text"
-                        aria-label="Minimum Y"
-                        value={yMin}
-                        onChange={(event) => setYMin(event.target.value)}
-                    />
-                    <span>to</span>
-                    <input
-                        type="text"
-                        aria-label="Maximum Y"
-                        value={yMax}
-                        onChange={(event) => setYMax(event.target.value)}
-                    />
+                <div className={style['graph-settings__range-group']}>
+                    <div className={style['graph-settings__range']}>
+                        <span>Y range</span>
+                        <input
+                            type="text"
+                            inputMode="decimal"
+                            aria-label="Minimum Y"
+                            aria-invalid={Boolean(yRangeError)}
+                            className={
+                                yRangeError
+                                    ? style['graph-settings__range-input--error']
+                                    : (!ranges.yMin.trim() && ranges.yMax.trim()
+                                        ? style['graph-settings__range-input--implied']
+                                        : undefined)
+                            }
+                            placeholder="−∞"
+                            value={ranges.yMin}
+                            onChange={(event) => onRangeChange('yMin', event.target.value)}
+                        />
+                        <span>to</span>
+                        <input
+                            type="text"
+                            inputMode="decimal"
+                            aria-label="Maximum Y"
+                            aria-invalid={Boolean(yRangeError)}
+                            className={
+                                yRangeError
+                                    ? style['graph-settings__range-input--error']
+                                    : (ranges.yMin.trim() && !ranges.yMax.trim()
+                                        ? style['graph-settings__range-input--implied']
+                                        : undefined)
+                            }
+                            placeholder="+∞"
+                            value={ranges.yMax}
+                            onChange={(event) => onRangeChange('yMax', event.target.value)}
+                        />
+                    </div>
+                    {yRangeError && <p className={style['graph-settings__range-error']} role="alert">{yRangeError}</p>}
                 </div>
             </section>
 

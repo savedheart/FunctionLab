@@ -27,6 +27,19 @@
     border: 2px solid var(--color-inputs-borders);
     border-radius: 10px;
     box-shadow: 0 6px 20px rgb(0 0 0 / 35%);
+
+    opacity: 0;
+    transition: opacity 0.12s ease, display 0.12s allow-discrete, overlay 0.12s allow-discrete;
+}
+
+.panel:popover-open {
+    opacity: 1;
+}
+
+@starting-style {
+    .panel:popover-open {
+        opacity: 0;
+    }
 }
 
 @supports (position-area: bottom span-left) {
