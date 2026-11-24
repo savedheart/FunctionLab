@@ -26,6 +26,7 @@ export function validateExpression(
 ): ValidationResult {
     let expression: Expression
     let tokens: readonly Token[]
+    let parameterName: string | undefined
 
     try {
         tokens = tokenize(source)
@@ -35,11 +36,11 @@ export function validateExpression(
             name?.type === 'identifier' &&
             second?.type === 'leftParen' &&
             parameter?.type === 'identifier' &&
-            parameter.value === 'x' &&
             closing?.type === 'rightParen' &&
             equals?.type === 'operator' &&
             equals.value === '='
         ) {
+            parameterName = parameter.value
             tokens = tokens.slice(5)
         } else if (
             name?.type === 'identifier' &&
@@ -50,7 +51,9 @@ export function validateExpression(
             tokens = tokens.slice(2)
         }
 
-        expression = parseTokens(tokens, source.length)
+        const expressionTokens = parameterName === undefined || parameterName === 'x' ? tokens : tokens.map((token): Token => token.type === 'identifier' && token.value === parameterName ? { ...token, value: 'x' } : token)
+
+        expression = parseTokens(expressionTokens, source.length)
     } catch (error) {
         if (error instanceof TokenizeError || error instanceof ParseError) {
             return {
@@ -67,7 +70,9 @@ export function validateExpression(
     for (const token of tokens) {
         if (
             token.type === 'identifier' &&
+            token.value !== parameterName &&
             !allowedVariables.has(token.value) &&
+            (token.value !== 'x' || parameterName === undefined) &&
             !Object.hasOwn(mathConstants, token.value)
         ) {
             return {
