@@ -1,8 +1,9 @@
-import { mathConstants } from '../constants/mathConstants'
+import { mathConstants } from '../constants/mathConstants.ts'
 import type { Expression } from '../types/Expression'
 import type { Token } from '../types/Token'
 import { parseTokens, ParseError } from './parse.ts'
 import { tokenize, TokenizeError } from './tokenize.ts'
+import { isAlwaysUndefined } from "./isAlwaysUndefined.ts"
 
 export type ValidationFailure = {
     valid: false
@@ -71,8 +72,8 @@ export function validateExpression(
         if (
             token.type === 'identifier' &&
             token.value !== parameterName &&
-            !allowedVariables.has(token.value) &&
-            (token.value !== 'x' || parameterName === undefined) &&
+            !(allowedVariables.has(token.value) &&
+            (token.value !== 'x' || parameterName === undefined)) &&
             !Object.hasOwn(mathConstants, token.value)
         ) {
             return {
@@ -81,6 +82,17 @@ export function validateExpression(
                 position: token.position,
                 length: token.value.length,
             }
+        }
+    }
+
+    if (isAlwaysUndefined(expression, allowedVariables)) {
+        const position = tokens[0].position
+
+        return {
+            valid: false,
+            error: 'This expression has no finite real value.',
+            position,
+            length: source.trimEnd().length - position,
         }
     }
 
