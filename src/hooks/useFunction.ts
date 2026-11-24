@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { functionColorNames } from '../constants/functionColors'
 import type { FunctionColor, MathFunction } from '../types/MathFunction'
+import type { Expression } from '../types/Expression'
 
 export function useFunctions() {
     const [functions, setFunctions] = useState<MathFunction[]>([])
     const [nextId, setNextId] = useState(1)
 
-    function addFunction(expression: string) {
-        const trimmed = expression.trim()
-        if (!trimmed) return
-
+    function addFunction(expression: string, parsedExpression: Expression) {
         const newFunction: MathFunction = {
             id: nextId,
-            expression: trimmed,
+            expression,
+            parsedExpression,
             color: functionColorNames[(nextId - 1) % functionColorNames.length],
             visible: true,
         }

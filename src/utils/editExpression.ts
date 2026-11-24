@@ -1,9 +1,4 @@
-import type { FunctionName } from "../constants/mathFunctions.ts"
-
-export type ExpressionEdit =
-    | { type: 'insert', text: string }
-    | { type: 'function', name: FunctionName }
-    | { type: 'backspace' }
+import type { ExpressionEdit } from '../types/ExpressionEdit'
 
 export function editExpression(value: string, start: number, end: number, edit: ExpressionEdit) {
     const before = value.slice(0, start)

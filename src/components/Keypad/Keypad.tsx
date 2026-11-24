@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import del from '../../assets/delete.svg'
-import type { ExpressionEdit } from "../../utils/editExpression.ts"
+import type { ExpressionEdit } from '../../types/ExpressionEdit'
 
 import style from './Keypad.module.css'
 
