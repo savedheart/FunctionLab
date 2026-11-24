@@ -5,7 +5,19 @@ import type { MathFunction } from "../types/MathFunction"
 import type { PlotFunction } from "../types/PlotFunction"
 import { evaluate } from "../utils/evaluate"
 
-export function useVisiblePlots(functions: readonly MathFunction[]): PlotFunction[] {
+type AxisRangeBounds = {
+    min?: number
+    max?: number
+}
+
+export function useVisiblePlots(
+    functions: readonly MathFunction[],
+    xBounds: AxisRangeBounds = {},
+    yBounds: AxisRangeBounds = {}
+): PlotFunction[] {
+    const { min: minX, max: maxX } = xBounds
+    const { min: minY, max: maxY } = yBounds
+
     return useMemo(() => {
         const plots: PlotFunction[] = []
 
@@ -14,9 +26,25 @@ export function useVisiblePlots(functions: readonly MathFunction[]): PlotFunctio
                 continue
             }
 
-            plots.push({ expression: x => Number.isFinite(x) ? (evaluate(func.parsedExpression, { x }) ?? NaN) : NaN, color: functionColors[func.color] })
+            plots.push({
+                expression: (x) => {
+                    if (!Number.isFinite(x)) return NaN
+                    if (minX !== undefined && x < minX) return NaN
+                    if (maxX !== undefined && x > maxX) return NaN
+
+                    const y = evaluate(func.parsedExpression, { x })
+                    if (y === null) return NaN
+                    if (minY !== undefined && y < minY) return NaN
+                    if (maxY !== undefined && y > maxY) return NaN
+
+                    return y
+                },
+                color: functionColors[func.color],
+                minX,
+                maxX,
+            })
         }
 
         return plots
-    }, [functions])
+    }, [functions, minX, maxX, minY, maxY])
 }

@@ -82,6 +82,15 @@
     cursor: grabbing;
 }
 
+/* Extend JSXGraph canvas past the clipped edges so tick labels slide in/out smoothly on all 4 sides */
+.graph__board {
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: calc(100% + 80px);
+    height: calc(100% + 80px);
+}
+
 /* Планшети та мобільні пристрої */
 
 @media (width <= 1024px) {

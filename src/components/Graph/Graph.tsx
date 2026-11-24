@@ -44,6 +44,7 @@ function createAxisConfig(
         name: '', // можна написати 'x' / 'y', щоб показувалося на краю осі
         withLabel: true,
         lastArrow: false,
+        layer: 2,
         strokeColor: '#76787B',
         strokeWidth: 1.5,
         highlight: false, // щоб вісь не підсвічувалась при наведенні
@@ -55,6 +56,7 @@ function createAxisConfig(
             highlight: false,
         },
         ticks: {
+            layer: 1, // сітка завжди під осями (axis: layer 2)
             insertTicks: false,
             ticksDistance: 2,     // автопідбір кроку чисел
             minorTicks: 3,         // 4 дрібні підсітки між числами
@@ -98,19 +100,23 @@ export default function Graph({ plots, showGrid, resetSignal }: GraphProps) {
         const yAxis = board.create('axis', [[0, 0], [0, 1]], createAxisConfig([12, -14], false, initialShowGridRef.current))
         axesRef.current = { x: xAxis, y: yAxis }
 
-        let currentStep = 0
+        let currentStepX = 0
+        let currentStepY = 0
 
         const syncGridStep = () => {
-            if (board.unitX <= 0) return
+            if (board.unitX <= 0 || board.unitY <= 0) return
 
-            const nextStep = getNiceStep(board.unitX)
-            if (nextStep === currentStep) return // оновлюємо лише коли крок реально змінився
+            const nextStepX = getNiceStep(board.unitX)
+            const nextStepY = board.keepaspectratio ? nextStepX : getNiceStep(board.unitY)
 
-            currentStep = nextStep
-            xAxis.defaultTicks.setAttribute({ ticksDistance: nextStep })
-            yAxis.defaultTicks.setAttribute({ ticksDistance: nextStep })
+            if (nextStepX === currentStepX && nextStepY === currentStepY) return
 
-            // Defer fullUpdate past JSXGraph's inUpdate guard so ticks redraw immediately on Reset and single zoom steps.
+            currentStepX = nextStepX
+            currentStepY = nextStepY
+            xAxis.defaultTicks.setAttribute({ ticksDistance: nextStepX })
+            yAxis.defaultTicks.setAttribute({ ticksDistance: nextStepY })
+
+            // Defer fullUpdate past JSXGraph's inUpdate guard so ticks redraw immediately on Reset and range/zoom steps.
             queueMicrotask(() => {
                 if (boardRef.current === board) {
                     board.fullUpdate()
@@ -238,8 +244,9 @@ export default function Graph({ plots, showGrid, resetSignal }: GraphProps) {
                 </div>
             </div>
 
-            <div className={style.graph__viewport} id={boardId}>
-                
+            <div className={style.graph__viewport}>
+                {/* Inline position prevents JSXGraph's svg.js from forcing position: relative and collapsing height */}
+                <div className={style.graph__board} id={boardId} style={{ position: 'absolute' }} />
             </div>
         </section>
     );

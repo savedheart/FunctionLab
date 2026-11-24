@@ -80,6 +80,13 @@
     color: var(--color-text);
     font: inherit;
     cursor: pointer;
+    outline: none;
+    transition: border-color 0.12s ease;
+}
+
+.function-analysis__select:focus,
+.function-analysis__select:active {
+    border-color: var(--color-accent);
 }
 
 /* Analysis items */
@@ -117,7 +124,15 @@
 
 .function-analysis__item p {
     margin: 0 0 0 32px;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.function-analysis__value {
+    color: var(--color-accent);
+    font-family: system-ui, 'Segoe UI', Arial, sans-serif;
+    font-weight: 600;
 }
 
 /* Calculator */
@@ -143,6 +158,12 @@
 
     color: var(--color-text);
     font: inherit;
+    outline: none;
+    transition: border-color 0.12s ease;
+}
+
+.function-analysis__input:focus {
+    border-color: var(--color-accent);
 }
 
 /* Планшети та мобільні пристрої */

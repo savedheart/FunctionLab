@@ -9,13 +9,22 @@ export function useFunctionPlots(boardRef: RefObject<JXG.Board | null>, plots: r
             return
         }
 
-        const curveIds = plots.map(({ expression, color }) =>
-            board.create('functiongraph', [expression], {
+        const curveIds = plots.map(({ expression, color, minX, maxX }) => {
+            const parents: unknown[] =
+                minX !== undefined || maxX !== undefined
+                    ? [
+                        expression,
+                        minX !== undefined ? minX : () => Math.min(maxX!, board.getBoundingBox()[0]),
+                        maxX !== undefined ? maxX : () => Math.max(minX!, board.getBoundingBox()[2]),
+                    ]
+                    : [expression]
+
+            return board.create('functiongraph', parents, {
                 strokeColor: color,
                 strokeWidth: 2,
                 highlight: false
             }).id
-        )
+        })
 
         return () => {
             if (boardRef.current === board) {

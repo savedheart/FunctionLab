@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import Header from '../components/Header/Header'
 import Functions from '../components/Functions/Functions'
@@ -16,26 +16,88 @@ import { useExpressionInput } from '../hooks/useExpressionInput'
 import { useVisiblePlots } from '../hooks/useVisiblePlots'
 
 import style from './workpage.module.css'
+import type { Expression } from '../types/Expression'
+
+export type GraphRanges = {
+    xMin: string
+    xMax: string
+    yMin: string
+    yMax: string
+}
+
+type AxisBounds = {
+    min?: number
+    max?: number
+    error?: string
+}
+
+const EMPTY_RANGES: GraphRanges = { xMin: '', xMax: '', yMin: '', yMax: '' }
+
+function parseAxisBounds(minText: string, maxText: string): AxisBounds {
+    const minTrimmed = minText.trim()
+    const maxTrimmed = maxText.trim()
+
+    let min: number | undefined
+    if (minTrimmed) {
+        const parsed = Number(minTrimmed)
+        if (!Number.isFinite(parsed)) {
+            return { error: 'Enter a valid number' }
+        }
+        min = parsed
+    }
+
+    let max: number | undefined
+    if (maxTrimmed) {
+        const parsed = Number(maxTrimmed)
+        if (!Number.isFinite(parsed)) {
+            return { error: 'Enter a valid number' }
+        }
+        max = parsed
+    }
+
+    if (min !== undefined && max !== undefined && min >= max) {
+        return { error: 'Min must be less than max' }
+    }
+
+    return { min, max }
+}
 
 export default function Workpage() {
     const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
     const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
-    const expressionInput = useExpressionInput(addFunction)
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
     const [showGrid, setShowGrid] = useState(true)
+    const [ranges, setRanges] = useState<GraphRanges>(EMPTY_RANGES)
     const [resetSignal, setResetSignal] = useState(0)
+    const [selectedAnalysisId, setSelectedAnalysisId] = useState<number | null>(null)
 
-    const plots = useVisiblePlots(functions)
+    function handleAddFunction(expression: string, parsedExpression: Expression) {
+        addFunction(expression, parsedExpression)
+        // Auto-follow the newly added function in Function Analysis.
+        setSelectedAnalysisId(null)
+    }
+
+    const expressionInput = useExpressionInput(handleAddFunction)
+
+    const xBounds = useMemo(() => parseAxisBounds(ranges.xMin, ranges.xMax), [ranges.xMin, ranges.xMax])
+    const yBounds = useMemo(() => parseAxisBounds(ranges.yMin, ranges.yMax), [ranges.yMin, ranges.yMax])
+
+    const plots = useVisiblePlots(functions, xBounds, yBounds)
 
     function handleCollapseFunctions() {
         setFunctionsOpen(false)
         closeKeypad()
     }
 
+    function handleRangeChange(field: keyof GraphRanges, value: string) {
+        setRanges((prev) => ({ ...prev, [field]: value }))
+    }
+
     function handleResetGraph() {
         setShowGrid(true)
+        setRanges(EMPTY_RANGES)
         setResetSignal((prev) => prev + 1)
     }
 
@@ -57,7 +119,11 @@ export default function Workpage() {
                 {/* На великих екранах графік займає весь простір під хедером, а панелі й клавіатура поверх нього */}
                 <div className={style['workpage__workspace']}>
                     <div className={style['workpage__graph']}>
-                        <Graph plots={plots} showGrid={showGrid} resetSignal={resetSignal} />
+                        <Graph
+                            plots={plots}
+                            showGrid={showGrid}
+                            resetSignal={resetSignal}
+                        />
                     </div>
 
                     <aside
@@ -70,13 +136,16 @@ export default function Workpage() {
                             input={expressionInput.value}
                             onInputChange={expressionInput.updateValue}
                             inputRef={expressionInput.inputRef}
-                            inputError={expressionInput.error}
                             onSubmitExpression={expressionInput.submitExpression}
                             changeFunctionColor={changeFunctionColor}
                             removeFunction={removeFunction}
                             toggleVisibility={toggleVisibility}
                             showGrid={showGrid}
                             onToggleGrid={setShowGrid}
+                            ranges={ranges}
+                            xRangeError={xBounds.error}
+                            yRangeError={yBounds.error}
+                            onRangeChange={handleRangeChange}
                             onResetGraph={handleResetGraph}
                             keypadVisible={keypadVisible}
                             toggleKeypad={toggleKeypad}
@@ -105,6 +174,8 @@ export default function Workpage() {
                     >
                         <FunctionAnalysis
                             functions={functions}
+                            selectedId={selectedAnalysisId}
+                            onSelectId={setSelectedAnalysisId}
                             onCollapse={() => setAnalysisOpen(false)}
                         />
                     </aside>
