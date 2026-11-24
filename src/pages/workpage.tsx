@@ -1,7 +1,4 @@
 import { useMemo, useState } from 'react'
-import { functionColors } from '../constants/functionColors'
-import { evaluate } from '../utils/evaluate'
-import { validateExpression } from '../utils/validateExpression'
 
 import Header from '../components/Header/Header'
 import Functions from '../components/Functions/Functions'
@@ -15,10 +12,11 @@ import hideToRight from '../assets/hide-sidebar-toRight.svg'
 
 import { useFunctions } from '../hooks/useFunction'
 import { useKeypad } from '../hooks/useKeypad'
-import { useExpressionInput } from "../hooks/useExpressionInput"
+import { useExpressionInput } from '../hooks/useExpressionInput'
+import { useVisiblePlots } from '../hooks/useVisiblePlots'
 
 import style from './workpage.module.css'
-import type { PlotFunction } from "../types/PlotFunction.ts";
+import type { Expression } from '../types/Expression'
 
 export type GraphRanges = {
     xMin: string
@@ -67,7 +65,6 @@ function parseAxisBounds(minText: string, maxText: string): AxisBounds {
 export default function Workpage() {
     const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
     const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
-    const expressionInput = useExpressionInput()
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
@@ -76,49 +73,18 @@ export default function Workpage() {
     const [resetSignal, setResetSignal] = useState(0)
     const [selectedAnalysisId, setSelectedAnalysisId] = useState<number | null>(null)
 
-    const xBounds = useMemo(() => parseAxisBounds(ranges.xMin, ranges.xMax), [ranges.xMin, ranges.xMax])
-    const yBounds = useMemo(() => parseAxisBounds(ranges.yMin, ranges.yMax), [ranges.yMin, ranges.yMax])
-
-    const plots = useMemo(() => {
-        const visiblePlots: PlotFunction[] = []
-
-        for (const func of functions) {
-            if (!func.visible) continue
-
-            const parsed = validateExpression(func.expression)
-            if (!parsed.valid) continue
-
-            const expression = parsed.expression
-            const { min: minX, max: maxX } = xBounds
-            const { min: minY, max: maxY } = yBounds
-
-            visiblePlots.push({
-                expression: (x) => {
-                    if (!Number.isFinite(x)) return NaN
-                    if (minX !== undefined && x < minX) return NaN
-                    if (maxX !== undefined && x > maxX) return NaN
-
-                    const y = evaluate(expression, { x })
-                    if (y === null) return NaN
-                    if (minY !== undefined && y < minY) return NaN
-                    if (maxY !== undefined && y > maxY) return NaN
-
-                    return y
-                },
-                color: functionColors[func.color],
-                minX,
-                maxX,
-            })
-        }
-
-        return visiblePlots
-    }, [functions, xBounds, yBounds])
-
-    function handleAddFunction(expression: string) {
-        addFunction(expression)
+    function handleAddFunction(expression: string, parsedExpression: Expression) {
+        addFunction(expression, parsedExpression)
         // Auto-follow the newly added function in Function Analysis.
         setSelectedAnalysisId(null)
     }
+
+    const expressionInput = useExpressionInput(handleAddFunction)
+
+    const xBounds = useMemo(() => parseAxisBounds(ranges.xMin, ranges.xMax), [ranges.xMin, ranges.xMax])
+    const yBounds = useMemo(() => parseAxisBounds(ranges.yMin, ranges.yMax), [ranges.yMin, ranges.yMax])
+
+    const plots = useVisiblePlots(functions, xBounds, yBounds)
 
     function handleCollapseFunctions() {
         setFunctionsOpen(false)
@@ -168,9 +134,9 @@ export default function Workpage() {
                         <Functions
                             functions={functions}
                             input={expressionInput.value}
-                            onInputChange={expressionInput.setValue}
+                            onInputChange={expressionInput.updateValue}
                             inputRef={expressionInput.inputRef}
-                            addFunction={handleAddFunction}
+                            onSubmitExpression={expressionInput.submitExpression}
                             changeFunctionColor={changeFunctionColor}
                             removeFunction={removeFunction}
                             toggleVisibility={toggleVisibility}

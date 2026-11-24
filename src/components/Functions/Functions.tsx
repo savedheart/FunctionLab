@@ -24,7 +24,7 @@ type FunctionsProps = {
     input: string,
     onInputChange: (value: string) => void,
     inputRef: Ref<HTMLInputElement>
-    addFunction: (expression: string) => void
+    onSubmitExpression: () => void
     changeFunctionColor: (id: number, color: FunctionColor) => void
     removeFunction: (id: number) => void
     toggleVisibility: (id: number, visible: boolean) => void
@@ -41,7 +41,7 @@ type FunctionsProps = {
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, input, onInputChange, inputRef, addFunction, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, ranges, xRangeError, yRangeError, onRangeChange, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
+export default function Functions({ functions, input, onInputChange, inputRef, onSubmitExpression, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, ranges, xRangeError, yRangeError, onRangeChange, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
     const hasInput = input.trim().length > 0
     const validation = hasInput ? validateExpression(input) : null
     const validationError = validation && !validation.valid ? validation : null
@@ -52,8 +52,7 @@ export default function Functions({ functions, input, onInputChange, inputRef, a
 
         if (isAddDisabled) return
 
-        addFunction(input)
-        onInputChange('')
+        onSubmitExpression()
     }
 
     return (
