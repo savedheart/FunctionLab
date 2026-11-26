@@ -7,22 +7,20 @@ import keyboardHide from '../../assets/keyboard-hide.svg'
 import hideToLeft from '../../assets/hide-sidebar-toLeft.svg'
 import resetIcon from '../../assets/reset.svg'
 
+import type { GraphRanges } from '../../types/GraphRanges'
 import type { FunctionColor, MathFunction } from '../../types/MathFunction'
-import type { GraphRanges } from '../../pages/workpage'
 import { functionColors } from '../../constants/functionColors'
+import { formatValidationError } from '../../utils/formatValidationError'
 import { validateExpression } from '../../utils/validateExpression'
 import FunctionOptions from '../FunctionOptions/FunctionOptions'
+import RangeSettingRow from './RangeSettingRow'
 
 import style from './Functions.module.css'
 
-function formatValidationError(error: string): string {
-    return error.replace(/at position (\d+)/g, (_, pos) => `at position ${Number(pos) + 1}`)
-}
-
 type FunctionsProps = {
     functions: MathFunction[]
-    input: string,
-    onInputChange: (value: string) => void,
+    input: string
+    onInputChange: (value: string) => void
     inputRef: Ref<HTMLInputElement>
     onSubmitExpression: () => void
     changeFunctionColor: (id: number, color: FunctionColor) => void
@@ -41,7 +39,27 @@ type FunctionsProps = {
     onCollapse?: () => void
 }
 
-export default function Functions({ functions, input, onInputChange, inputRef, onSubmitExpression, changeFunctionColor, removeFunction, toggleVisibility, showGrid, onToggleGrid, ranges, xRangeError, yRangeError, onRangeChange, onResetGraph, keypadVisible, toggleKeypad, inlineKeypad, onCollapse }: FunctionsProps) {
+export default function Functions({
+    functions,
+    input,
+    onInputChange,
+    inputRef,
+    onSubmitExpression,
+    changeFunctionColor,
+    removeFunction,
+    toggleVisibility,
+    showGrid,
+    onToggleGrid,
+    ranges,
+    xRangeError,
+    yRangeError,
+    onRangeChange,
+    onResetGraph,
+    keypadVisible,
+    toggleKeypad,
+    inlineKeypad,
+    onCollapse,
+}: FunctionsProps) {
     const hasInput = input.trim().length > 0
     const validation = hasInput ? validateExpression(input) : null
     const validationError = validation && !validation.valid ? validation : null
@@ -108,7 +126,7 @@ export default function Functions({ functions, input, onInputChange, inputRef, o
                             className={style['functions-panel__tooltip']}
                             role="tooltip"
                         >
-                            {formatValidationError(validationError.error)}
+                            {formatValidationError(validationError, input)}
                         </span>
                     )}
                 </span>
@@ -171,85 +189,27 @@ export default function Functions({ functions, input, onInputChange, inputRef, o
                     </button>
                 </div>
 
-                <div className={style['graph-settings__range-group']}>
-                    <div className={style['graph-settings__range']}>
-                        <span>X range</span>
-                        <input
-                            type="text"
-                            inputMode="decimal"
-                            aria-label="Minimum X"
-                            aria-invalid={Boolean(xRangeError)}
-                            className={
-                                xRangeError
-                                    ? style['graph-settings__range-input--error']
-                                    : (!ranges.xMin.trim() && ranges.xMax.trim()
-                                        ? style['graph-settings__range-input--implied']
-                                        : undefined)
-                            }
-                            placeholder="−∞"
-                            value={ranges.xMin}
-                            onChange={(event) => onRangeChange('xMin', event.target.value)}
-                        />
-                        <span>to</span>
-                        <input
-                            type="text"
-                            inputMode="decimal"
-                            aria-label="Maximum X"
-                            aria-invalid={Boolean(xRangeError)}
-                            className={
-                                xRangeError
-                                    ? style['graph-settings__range-input--error']
-                                    : (ranges.xMin.trim() && !ranges.xMax.trim()
-                                        ? style['graph-settings__range-input--implied']
-                                        : undefined)
-                            }
-                            placeholder="+∞"
-                            value={ranges.xMax}
-                            onChange={(event) => onRangeChange('xMax', event.target.value)}
-                        />
-                    </div>
-                    {xRangeError && <p className={style['graph-settings__range-error']} role="alert">{xRangeError}</p>}
-                </div>
+                <RangeSettingRow
+                    label="X range"
+                    minAriaLabel="Minimum X"
+                    maxAriaLabel="Maximum X"
+                    minValue={ranges.xMin}
+                    maxValue={ranges.xMax}
+                    error={xRangeError}
+                    onMinChange={(value) => onRangeChange('xMin', value)}
+                    onMaxChange={(value) => onRangeChange('xMax', value)}
+                />
 
-                <div className={style['graph-settings__range-group']}>
-                    <div className={style['graph-settings__range']}>
-                        <span>Y range</span>
-                        <input
-                            type="text"
-                            inputMode="decimal"
-                            aria-label="Minimum Y"
-                            aria-invalid={Boolean(yRangeError)}
-                            className={
-                                yRangeError
-                                    ? style['graph-settings__range-input--error']
-                                    : (!ranges.yMin.trim() && ranges.yMax.trim()
-                                        ? style['graph-settings__range-input--implied']
-                                        : undefined)
-                            }
-                            placeholder="−∞"
-                            value={ranges.yMin}
-                            onChange={(event) => onRangeChange('yMin', event.target.value)}
-                        />
-                        <span>to</span>
-                        <input
-                            type="text"
-                            inputMode="decimal"
-                            aria-label="Maximum Y"
-                            aria-invalid={Boolean(yRangeError)}
-                            className={
-                                yRangeError
-                                    ? style['graph-settings__range-input--error']
-                                    : (ranges.yMin.trim() && !ranges.yMax.trim()
-                                        ? style['graph-settings__range-input--implied']
-                                        : undefined)
-                            }
-                            placeholder="+∞"
-                            value={ranges.yMax}
-                            onChange={(event) => onRangeChange('yMax', event.target.value)}
-                        />
-                    </div>
-                    {yRangeError && <p className={style['graph-settings__range-error']} role="alert">{yRangeError}</p>}
-                </div>
+                <RangeSettingRow
+                    label="Y range"
+                    minAriaLabel="Minimum Y"
+                    maxAriaLabel="Maximum Y"
+                    minValue={ranges.yMin}
+                    maxValue={ranges.yMax}
+                    error={yRangeError}
+                    onMinChange={(value) => onRangeChange('yMin', value)}
+                    onMaxChange={(value) => onRangeChange('yMax', value)}
+                />
             </section>
 
             <section className={style['math-keypad']} aria-labelledby="keypad-title">
