@@ -10,11 +10,7 @@ type FunctionOptionsProps = {
     onRemove: (id: number) => void
 }
 
-export default function FunctionOptions({
-                                            func,
-                                            onChangeColor,
-                                            onRemove,
-                                        }: FunctionOptionsProps) {
+export default function FunctionOptions({ func, onChangeColor, onRemove }: FunctionOptionsProps) {
     const popoverId = useId()
     const label = `Options for ${func.expression} (function ${func.id})`
 
