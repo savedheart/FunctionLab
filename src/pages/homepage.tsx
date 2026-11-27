@@ -39,7 +39,7 @@ export default function Homepage(){
                                     <>
                                         Visualize mathematical functions with high-precision 2D rendering.
                                         <span className={style.desktopOnly}>
-                                            {" "}Pan and zoom seamlessly across the coordinate plane with instant 60 FPS real-time calculation.
+                                            {" "}Pan and zoom smoothly across the coordinate plane, toggle grid lines, and set custom X and Y axis bounds.
                                         </span>
                                     </>
                                 }                          
@@ -51,7 +51,7 @@ export default function Homepage(){
                                     <>
                                         Plot and compare multiple equations simultaneously on a single canvas.
                                         <span className={style.desktopOnly}>
-                                            {" "}Customize individual color palettes and toggle layer visibility to study complex interactions.
+                                            {" "}Customize individual color palettes, toggle curve visibility, and enter formulas quickly with the built-in math keypad.
                                         </span>
                                     </>
                                     }                          
@@ -61,9 +61,9 @@ export default function Homepage(){
                         title='Analyze Functions'
                         paragraph={
                                     <>
-                                        Examine critical mathematical properties including roots, extrema, and asymptotes.
+                                        Examine key mathematical properties including domain, range, intercepts, and local extrema.
                                         <span className={style.desktopOnly}>
-                                            {" "}Unlock built-in calculus tools to evaluate derivatives, limits, and integral areas on the fly.
+                                            {" "}Automatically detect even or odd symmetry and explore function behavior across bounded and infinite intervals.
                                         </span>
                                     </>
                                     }                          
@@ -73,9 +73,9 @@ export default function Homepage(){
                         title='Point Inspection'
                         paragraph={
                                     <>
-                                        Trace along curves with coordinate snapping to pinpoint exact intercepts.
+                                        Evaluate exact function values at any input point with instant real-time calculation.
                                         <span className={style.desktopOnly}>
-                                            {" "}Hover to inspect values dynamically with precise floating coordinate tooltips.
+                                            {" "}Pinpoint x- and y-intercepts and write flexible expressions using y = … or custom parameters like f(t) = ….
                                         </span>
                                     </>
                                     }                         

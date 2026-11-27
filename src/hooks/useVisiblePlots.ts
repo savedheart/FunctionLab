@@ -1,19 +1,15 @@
 import { useMemo } from 'react'
 
 import { functionColors } from "../constants/functionColors"
+import type { AxisBounds } from "../types/GraphRanges"
 import type { MathFunction } from "../types/MathFunction"
 import type { PlotFunction } from "../types/PlotFunction"
 import { evaluate } from "../utils/evaluate"
 
-type AxisRangeBounds = {
-    min?: number
-    max?: number
-}
-
 export function useVisiblePlots(
     functions: readonly MathFunction[],
-    xBounds: AxisRangeBounds = {},
-    yBounds: AxisRangeBounds = {}
+    xBounds: AxisBounds = {},
+    yBounds: AxisBounds = {}
 ): PlotFunction[] {
     const { min: minX, max: maxX } = xBounds
     const { min: minY, max: maxY } = yBounds
