@@ -27,7 +27,7 @@ export function useFunctionPlots(boardRef: RefObject<JXG.Board | null>, plots: r
         })
 
         return () => {
-            if (boardRef.current === board) {
+            if (board.objects) {
                 board.removeObject(curveIds)
             }
         }

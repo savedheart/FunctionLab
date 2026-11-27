@@ -3,16 +3,20 @@ import { functionColorNames } from '../constants/functionColors'
 import type { FunctionColor, MathFunction } from '../types/MathFunction'
 import type { Expression } from '../types/Expression'
 
+// Step 3 (skipping 2 adjacent colors) is coprime with 10, so every color is used once with high contrast.
+const COLOR_STEP = 3
+
 export function useFunctions() {
     const [functions, setFunctions] = useState<MathFunction[]>([])
     const [nextId, setNextId] = useState(1)
 
     function addFunction(expression: string, parsedExpression: Expression) {
+        const colorIndex = ((nextId - 1) * COLOR_STEP) % functionColorNames.length
         const newFunction: MathFunction = {
             id: nextId,
             expression,
             parsedExpression,
-            color: functionColorNames[(nextId - 1) % functionColorNames.length],
+            color: functionColorNames[colorIndex],
             visible: true,
         }
 

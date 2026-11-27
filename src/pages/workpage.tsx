@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import Header from '../components/Header/Header'
 import Functions from '../components/Functions/Functions'
@@ -10,67 +10,31 @@ import Footer from '../components/Footer/Footer'
 import hideToLeft from '../assets/hide-sidebar-toLeft.svg'
 import hideToRight from '../assets/hide-sidebar-toRight.svg'
 
-import { useFunctions } from '../hooks/useFunction'
-import { useKeypad } from '../hooks/useKeypad'
 import { useExpressionInput } from '../hooks/useExpressionInput'
+import { useFunctions } from '../hooks/useFunctions'
+import { useGraphSettings } from '../hooks/useGraphSettings'
+import { useKeypad } from '../hooks/useKeypad'
 import { useVisiblePlots } from '../hooks/useVisiblePlots'
-
-import style from './workpage.module.css'
 import type { Expression } from '../types/Expression'
 
-export type GraphRanges = {
-    xMin: string
-    xMax: string
-    yMin: string
-    yMax: string
-}
-
-type AxisBounds = {
-    min?: number
-    max?: number
-    error?: string
-}
-
-const EMPTY_RANGES: GraphRanges = { xMin: '', xMax: '', yMin: '', yMax: '' }
-
-function parseAxisBounds(minText: string, maxText: string): AxisBounds {
-    const minTrimmed = minText.trim()
-    const maxTrimmed = maxText.trim()
-
-    let min: number | undefined
-    if (minTrimmed) {
-        const parsed = Number(minTrimmed)
-        if (!Number.isFinite(parsed)) {
-            return { error: 'Enter a valid number' }
-        }
-        min = parsed
-    }
-
-    let max: number | undefined
-    if (maxTrimmed) {
-        const parsed = Number(maxTrimmed)
-        if (!Number.isFinite(parsed)) {
-            return { error: 'Enter a valid number' }
-        }
-        max = parsed
-    }
-
-    if (min !== undefined && max !== undefined && min >= max) {
-        return { error: 'Min must be less than max' }
-    }
-
-    return { min, max }
-}
+import style from './workpage.module.css'
 
 export default function Workpage() {
     const { functions, addFunction, toggleVisibility, changeFunctionColor, removeFunction } = useFunctions()
     const { keypadVisible, toggleKeypad, closeKeypad } = useKeypad()
+    const {
+        showGrid,
+        setShowGrid,
+        ranges,
+        xBounds,
+        yBounds,
+        resetSignal,
+        handleRangeChange,
+        handleResetGraph,
+    } = useGraphSettings()
 
     const [functionsOpen, setFunctionsOpen] = useState(true)
     const [analysisOpen, setAnalysisOpen] = useState(true)
-    const [showGrid, setShowGrid] = useState(true)
-    const [ranges, setRanges] = useState<GraphRanges>(EMPTY_RANGES)
-    const [resetSignal, setResetSignal] = useState(0)
     const [selectedAnalysisId, setSelectedAnalysisId] = useState<number | null>(null)
 
     function handleAddFunction(expression: string, parsedExpression: Expression) {
@@ -80,25 +44,11 @@ export default function Workpage() {
     }
 
     const expressionInput = useExpressionInput(handleAddFunction)
-
-    const xBounds = useMemo(() => parseAxisBounds(ranges.xMin, ranges.xMax), [ranges.xMin, ranges.xMax])
-    const yBounds = useMemo(() => parseAxisBounds(ranges.yMin, ranges.yMax), [ranges.yMin, ranges.yMax])
-
     const plots = useVisiblePlots(functions, xBounds, yBounds)
 
     function handleCollapseFunctions() {
         setFunctionsOpen(false)
         closeKeypad()
-    }
-
-    function handleRangeChange(field: keyof GraphRanges, value: string) {
-        setRanges((prev) => ({ ...prev, [field]: value }))
-    }
-
-    function handleResetGraph() {
-        setShowGrid(true)
-        setRanges(EMPTY_RANGES)
-        setResetSignal((prev) => prev + 1)
     }
 
     return (
@@ -130,6 +80,8 @@ export default function Workpage() {
                         className={`${style['workpage__functions']} ${
                             !functionsOpen ? style['workpage__functions--hidden'] : ''
                         }`}
+                        aria-hidden={!functionsOpen}
+                        inert={!functionsOpen}
                     >
                         <Functions
                             functions={functions}
@@ -171,6 +123,8 @@ export default function Workpage() {
                         className={`${style['workpage__analysis']} ${
                             !analysisOpen ? style['workpage__analysis--hidden'] : ''
                         }`}
+                        aria-hidden={!analysisOpen}
+                        inert={!analysisOpen}
                     >
                         <FunctionAnalysis
                             functions={functions}
@@ -199,7 +153,6 @@ export default function Workpage() {
                         aria-hidden={!keypadVisible}
                         inert={!keypadVisible}
                     >
-
                         <Keypad onEdit={expressionInput.applyEdit} onEnter={expressionInput.submit} />
                     </div>
                 </div>
@@ -207,5 +160,5 @@ export default function Workpage() {
 
             <Footer />
         </div>
-    );
+    )
 }
