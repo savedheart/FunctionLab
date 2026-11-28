@@ -1,4 +1,5 @@
 import { analyzeFunction } from '../utils/analyzeFunction.ts'
+import { selectPeriodicRepresentatives } from '../utils/selectPeriodicRepresentatives.ts'
 
 function assertEqual(actual: unknown, expected: unknown): void {
     if (JSON.stringify(actual) !== JSON.stringify(expected)) {
@@ -147,6 +148,30 @@ for (const source of ['5', 'f(a) = a-a', 'cos(0*x+1)']) {
 for (const source of ['cos(x^2)', 'exp(x)', '(x-1)/(x-1)']) {
     assertEqual(analyzeValid(source, sampleWindow).period, 'unknown')
 }
+
+const cosine = analyzeValid('cos(x)', { minX: -10, maxX: 10 })
+
+const cosineMinima = selectPeriodicRepresentatives(cosine.localMinima, (point) => point.x, cosine.period, cosine.step)
+
+const cosineMaxima = selectPeriodicRepresentatives(cosine.localMaxima, (point) => point.x, cosine.period, cosine.step)
+
+const cosineRoots = selectPeriodicRepresentatives(cosine.xIntercepts, (x) => x, cosine.period, cosine.step)
+
+assertEqual(cosineMinima.length, 1)
+assertEqual(Math.abs(cosineMinima[0].x - Math.PI) <= cosine.step, true)
+assertEqual(cosineMaxima.length, 1)
+assertClose(cosineMaxima[0].x, 0)
+assertEqual(cosineRoots.length, 2)
+assertClose(cosineRoots[0], -Math.PI / 2)
+assertClose(cosineRoots[1], Math.PI / 2)
+
+const quadratic = analyzeValid('x^2-1', sampleWindow)
+assertEqual(
+    selectPeriodicRepresentatives(
+        quadratic.xIntercepts, (x) => x, quadratic.period, quadratic.step,
+    ),
+    [-1, 1],
+)
 
 const invalidCases: Array<[string, number, number]> = [
     ['x + y', 4, 1],

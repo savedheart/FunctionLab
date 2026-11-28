@@ -5,7 +5,8 @@ import { analyzeFunction } from '../utils/analyzeFunction'
 import { DEFAULT_ANALYSIS_WINDOW, detectSymmetry, resolveExtendedDomain, resolveExtendedRange } from '../utils/extendedAnalysis'
 import { formatInterval, formatNumber, formatPoint, formatPointList } from '../utils/formatAnalysis'
 import { formatValueAtX } from '../utils/formatValueAtX'
-import { resolveKnownRange } from "../utils/resolveKnownRange"
+import { resolveKnownRange } from '../utils/resolveKnownRange'
+import { selectPeriodicRepresentatives } from '../utils/selectPeriodicRepresentatives'
 
 const MAX_DISPLAYED_DOMAIN_INTERVALS = 4
 
@@ -75,23 +76,24 @@ export function useFunctionAnalysis(
     const xInterceptsText = useMemo(() => {
         if (!analysis) return '—'
         if (analysis.allFiniteSamplesZero) return `All ${paramName} in domain`
-        if (analysis.xIntercepts.length === 0) return 'None'
 
-        const visible = analysis.xIntercepts.slice(0, 6).map(formatNumber).join(', ')
-        return analysis.xIntercepts.length > 6 ? `${visible}, …` : visible
+        const roots = selectPeriodicRepresentatives(analysis.xIntercepts, (x) => x, analysis.period, analysis.step,)
+
+        if (roots.length === 0) return 'None'
+
+        const visible = roots.slice(0, 6).map(formatNumber).join(', ')
+        return roots.length > 6 ? `${visible}, …` : visible
     }, [analysis, paramName])
 
     const yInterceptText = analysis
         ? (analysis.yIntercept ? formatPoint(analysis.yIntercept) : 'None')
         : '—'
 
-    const minimaText = analysis ? formatPointList(analysis.localMinima) : '—'
-    const maximaText = analysis ? formatPointList(analysis.localMaxima) : '—'
+    const minimaText = analysis ? formatPointList(selectPeriodicRepresentatives(analysis.localMinima, (point) => point.x, analysis.period, analysis.step)) : '—'
 
-    const symmetryText = useMemo(
-        () => (analysis ? detectSymmetry(analysis.valueAt) : '—'),
-        [analysis]
-    )
+    const maximaText = analysis ? formatPointList(selectPeriodicRepresentatives(analysis.localMaxima, (point) => point.x, analysis.period, analysis.step)) : '—'
+
+    const symmetryText = useMemo(() => (analysis ? detectSymmetry(analysis.valueAt) : '—'), [analysis])
 
     let periodText = '—'
 
