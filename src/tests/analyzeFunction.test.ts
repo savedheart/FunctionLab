@@ -28,7 +28,7 @@ function analyzeValid(source: string, options: AnalysisOptions) {
 }
 
 type Analysis = ReturnType<typeof analyzeValid>
-type Summary = Omit<Analysis, 'valueAt' | 'valid' | 'window' | 'period' | 'symmetry'>
+type Summary = Omit<Analysis, 'valueAt' | 'valid' | 'window' | 'period' | 'symmetry' | 'expression' | 'step' | 'domainBreaks'>
 
 const sampleWindow = { minX: -2, maxX: 2, segments: 4 }
 

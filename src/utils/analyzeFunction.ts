@@ -1,5 +1,7 @@
 import { evaluate } from './evaluate.ts'
 import { validateExpression, type ValidationFailure } from './validateExpression.ts'
+import { findDomainBreaks } from "./findDomainBreaks.ts"
+import type { Expression } from "../types/Expression.ts";
 
 type Point = {
     x: number
@@ -20,6 +22,9 @@ type AnalysisOptions = {
 type FunctionAnalysisResult = {
     valid: true
     window: Interval
+    step: number
+    domainBreaks: number[]
+    expression: Expression
     sampledDomain: Interval[]
     sampledRange: Interval | null
     xIntercepts: number[]
@@ -87,8 +92,16 @@ export function analyzeFunction(source: string, { minX, maxX, segments = 1000 }:
 
     const expression = validation.expression
 
+    const step = width / segments
+    const domainBreaks = findDomainBreaks(expression, minX, maxX, segments)
+    const excludedPoints = new Set(domainBreaks)
+
     function valueAt(x: number): number | null {
-        return Number.isFinite(x) ? evaluate(expression, { x }) : null
+        if (!Number.isFinite(x) || excludedPoints.has(x)) {
+            return null
+        }
+
+        return evaluate(expression, { x })
     }
 
     const sampledDomain: Interval[] = []
@@ -100,8 +113,18 @@ export function analyzeFunction(source: string, { minX, maxX, segments = 1000 }:
     let previous: Point | null = null
     let beforePrevious: Point | null = null
 
+    let nextBreak = 0
+
     for (let index = 0; index <= segments; index++) {
         const x = index === segments ? maxX : minX + width * (index / segments)
+
+        while (nextBreak < domainBreaks.length && domainBreaks[nextBreak] <= x) {
+            domainRun = null
+            previous = null
+            beforePrevious = null
+            nextBreak++
+        }
+
         const y = valueAt(x)
 
         if (y === null) {
@@ -158,6 +181,9 @@ export function analyzeFunction(source: string, { minX, maxX, segments = 1000 }:
     return {
         valid: true,
         window: { min: minX, max: maxX },
+        step,
+        domainBreaks,
+        expression,
         sampledDomain,
         sampledRange,
         xIntercepts: allFiniteSamplesZero ? [] : xIntercepts,

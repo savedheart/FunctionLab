@@ -1,19 +1,11 @@
 import { useMemo, useState } from 'react'
+
 import type { MathFunction } from '../types/MathFunction'
 import { analyzeFunction } from '../utils/analyzeFunction'
-import {
-    DEFAULT_ANALYSIS_WINDOW,
-    detectSymmetry,
-    resolveExtendedDomain,
-    resolveExtendedRange,
-} from '../utils/extendedAnalysis'
-import {
-    formatInterval,
-    formatNumber,
-    formatPoint,
-    formatPointList,
-} from '../utils/formatAnalysis'
+import { DEFAULT_ANALYSIS_WINDOW, detectSymmetry, resolveExtendedDomain, resolveExtendedRange } from '../utils/extendedAnalysis'
+import { formatInterval, formatNumber, formatPoint, formatPointList } from '../utils/formatAnalysis'
 import { formatValueAtX } from '../utils/formatValueAtX'
+import { resolveKnownRange } from "../utils/resolveKnownRange"
 
 const MAX_DISPLAYED_DOMAIN_INTERVALS = 4
 
@@ -57,7 +49,7 @@ export function useFunctionAnalysis(
 
     const extendedDomain = useMemo(() => {
         if (!analysis) return []
-        return resolveExtendedDomain(analysis.sampledDomain, analysis.valueAt)
+        return resolveExtendedDomain(analysis.sampledDomain, analysis.valueAt, analysis.window, analysis.step, analysis.domainBreaks,)
     }, [analysis])
 
     const domainText = useMemo(() => {
@@ -67,7 +59,9 @@ export function useFunctionAnalysis(
         }
         const visible = extendedDomain
             .slice(0, MAX_DISPLAYED_DOMAIN_INTERVALS)
-            .map((interval) => formatInterval(interval.min, interval.max, interval.openMin, interval.openMax))
+            .map(({ min, max, openMin, openMax }) => (
+                min === max ? `{${formatNumber(min)}}` : formatInterval(min, max, openMin, openMax)
+            ))
             .join(' ∪ ')
 
         return extendedDomain.length > MAX_DISPLAYED_DOMAIN_INTERVALS ? `${visible} ∪ …` : visible
@@ -75,7 +69,7 @@ export function useFunctionAnalysis(
 
     const rangeText = useMemo(() => {
         if (!analysis) return '—'
-        return resolveExtendedRange(analysis.sampledRange, extendedDomain, analysis.valueAt)
+        return resolveKnownRange(analysis.expression) ?? resolveExtendedRange(analysis.sampledRange, extendedDomain, analysis.valueAt)
     }, [analysis, extendedDomain])
 
     const xInterceptsText = useMemo(() => {
