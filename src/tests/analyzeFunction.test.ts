@@ -121,6 +121,33 @@ assertEqual(squareRoot.valueAt(Infinity), null)
 assertEqual(squareRoot.period, 'unknown')
 assertEqual(squareRoot.symmetry, 'unknown')
 
+const periodCases: Array<[string, number]> = [
+    ['f(x) = cos(x)', 2 * Math.PI],
+    ['f(a) = cos(a)', 2 * Math.PI],
+    ['sin(2*x+1)', Math.PI],
+    ['cos(-3*x)', 2 * Math.PI / 3],
+    ['tan(x)', Math.PI],
+    ['cot(2*x)', Math.PI / 2],
+]
+
+for (const [source, expected] of periodCases) {
+    const { period } = analyzeValid(source, sampleWindow)
+
+    if (typeof period !== 'number') {
+        throw new Error(`Expected a numeric period for "${source}", got "${period}"`)
+    }
+
+    assertClose(period, expected)
+}
+
+for (const source of ['5', 'f(a) = a-a', 'cos(0*x+1)']) {
+    assertEqual(analyzeValid(source, sampleWindow).period, 'any-positive')
+}
+
+for (const source of ['cos(x^2)', 'exp(x)', '(x-1)/(x-1)']) {
+    assertEqual(analyzeValid(source, sampleWindow).period, 'unknown')
+}
+
 const invalidCases: Array<[string, number, number]> = [
     ['x + y', 4, 1],
     ['x +', 3, 0],

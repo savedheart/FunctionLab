@@ -1,7 +1,9 @@
 import { evaluate } from './evaluate.ts'
 import { validateExpression, type ValidationFailure } from './validateExpression.ts'
 import { findDomainBreaks } from "./findDomainBreaks.ts"
-import type { Expression } from "../types/Expression.ts";
+import type { Expression } from "../types/Expression.ts"
+import type { FunctionPeriod } from "../types/FunctionPeriod.ts"
+import { detectPeriod } from './detectPeriod.ts'
 
 type Point = {
     x: number
@@ -32,7 +34,7 @@ type FunctionAnalysisResult = {
     yIntercept: Point | null
     localMinima: Point[]
     localMaxima: Point[]
-    period: 'unknown'
+    period: FunctionPeriod
     symmetry: 'unknown'
     valueAt: (x: number) => number | null
 } | ValidationFailure
@@ -191,7 +193,7 @@ export function analyzeFunction(source: string, { minX, maxX, segments = 1000 }:
         yIntercept: yAtZero === null ? null : { x: 0, y: yAtZero },
         localMinima,
         localMaxima,
-        period: 'unknown',
+        period: detectPeriod(expression),
         symmetry: 'unknown',
         valueAt,
     }

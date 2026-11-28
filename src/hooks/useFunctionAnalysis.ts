@@ -93,7 +93,19 @@ export function useFunctionAnalysis(
         [analysis]
     )
 
-    const periodText = analysis ? 'Not determined' : '—'
+    let periodText = '—'
+
+    if (analysis) {
+        const { period } = analysis
+
+        if (period === 'any-positive') {
+            periodText = 'Any T > 0'
+        } else if (period === 'unknown') {
+            periodText = 'Not determined'
+        } else {
+            periodText = period < 1e-9 ? period.toExponential(3) : formatValueAtX(period)
+        }
+    }
 
     let valueAtXText = '—'
     if (analysis && xInput.trim()) {
