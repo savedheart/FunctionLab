@@ -1,19 +1,12 @@
 import { useMemo, useState } from 'react'
+
 import type { MathFunction } from '../types/MathFunction'
 import { analyzeFunction } from '../utils/analyzeFunction'
-import {
-    DEFAULT_ANALYSIS_WINDOW,
-    detectSymmetry,
-    resolveExtendedDomain,
-    resolveExtendedRange,
-} from '../utils/extendedAnalysis'
-import {
-    formatInterval,
-    formatNumber,
-    formatPoint,
-    formatPointList,
-} from '../utils/formatAnalysis'
+import { DEFAULT_ANALYSIS_WINDOW, detectSymmetry, resolveExtendedDomain, resolveExtendedRange } from '../utils/extendedAnalysis'
+import { formatInterval, formatNumber, formatPoint, formatPointList } from '../utils/formatAnalysis'
 import { formatValueAtX } from '../utils/formatValueAtX'
+import { resolveKnownRange } from '../utils/resolveKnownRange'
+import { selectPeriodicRepresentatives } from '../utils/selectPeriodicRepresentatives'
 
 const MAX_DISPLAYED_DOMAIN_INTERVALS = 4
 
@@ -57,7 +50,7 @@ export function useFunctionAnalysis(
 
     const extendedDomain = useMemo(() => {
         if (!analysis) return []
-        return resolveExtendedDomain(analysis.sampledDomain, analysis.valueAt)
+        return resolveExtendedDomain(analysis.sampledDomain, analysis.valueAt, analysis.window, analysis.step, analysis.domainBreaks,)
     }, [analysis])
 
     const domainText = useMemo(() => {
@@ -67,7 +60,9 @@ export function useFunctionAnalysis(
         }
         const visible = extendedDomain
             .slice(0, MAX_DISPLAYED_DOMAIN_INTERVALS)
-            .map((interval) => formatInterval(interval.min, interval.max, interval.openMin, interval.openMax))
+            .map(({ min, max, openMin, openMax }) => (
+                min === max ? `{${formatNumber(min)}}` : formatInterval(min, max, openMin, openMax)
+            ))
             .join(' ∪ ')
 
         return extendedDomain.length > MAX_DISPLAYED_DOMAIN_INTERVALS ? `${visible} ∪ …` : visible
@@ -75,31 +70,44 @@ export function useFunctionAnalysis(
 
     const rangeText = useMemo(() => {
         if (!analysis) return '—'
-        return resolveExtendedRange(analysis.sampledRange, extendedDomain, analysis.valueAt)
+        return resolveKnownRange(analysis.expression) ?? resolveExtendedRange(analysis.sampledRange, extendedDomain, analysis.valueAt)
     }, [analysis, extendedDomain])
 
     const xInterceptsText = useMemo(() => {
         if (!analysis) return '—'
         if (analysis.allFiniteSamplesZero) return `All ${paramName} in domain`
-        if (analysis.xIntercepts.length === 0) return 'None'
 
-        const visible = analysis.xIntercepts.slice(0, 6).map(formatNumber).join(', ')
-        return analysis.xIntercepts.length > 6 ? `${visible}, …` : visible
+        const roots = selectPeriodicRepresentatives(analysis.xIntercepts, (x) => x, analysis.period, analysis.step,)
+
+        if (roots.length === 0) return 'None'
+
+        const visible = roots.slice(0, 6).map(formatNumber).join(', ')
+        return roots.length > 6 ? `${visible}, …` : visible
     }, [analysis, paramName])
 
     const yInterceptText = analysis
         ? (analysis.yIntercept ? formatPoint(analysis.yIntercept) : 'None')
         : '—'
 
-    const minimaText = analysis ? formatPointList(analysis.localMinima) : '—'
-    const maximaText = analysis ? formatPointList(analysis.localMaxima) : '—'
+    const minimaText = analysis ? formatPointList(selectPeriodicRepresentatives(analysis.localMinima, (point) => point.x, analysis.period, analysis.step)) : '—'
 
-    const symmetryText = useMemo(
-        () => (analysis ? detectSymmetry(analysis.valueAt) : '—'),
-        [analysis]
-    )
+    const maximaText = analysis ? formatPointList(selectPeriodicRepresentatives(analysis.localMaxima, (point) => point.x, analysis.period, analysis.step)) : '—'
 
-    const periodText = analysis ? 'Not determined' : '—'
+    const symmetryText = useMemo(() => (analysis ? detectSymmetry(analysis.valueAt) : '—'), [analysis])
+
+    let periodText = '—'
+
+    if (analysis) {
+        const { period } = analysis
+
+        if (period === 'any-positive') {
+            periodText = 'Any T > 0'
+        } else if (period === 'unknown') {
+            periodText = 'Not determined'
+        } else {
+            periodText = period < 1e-9 ? period.toExponential(3) : formatValueAtX(period)
+        }
+    }
 
     let valueAtXText = '—'
     if (analysis && xInput.trim()) {

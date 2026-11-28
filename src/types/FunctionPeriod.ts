@@ -1,0 +1,1 @@
+export type FunctionPeriod = number | 'any-positive' | 'unknown'
